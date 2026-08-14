@@ -1,26 +1,317 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================================================================
+   DIAMOND FESTIVAL 2027 — DESIGN SYSTEM
+   Single source of truth for colour, type, spacing, radii, shadows, glows,
+   motion timing and breakpoints. Everything else consumes these tokens.
+   ========================================================================== */
+
+@theme {
+  /* --- Colour ------------------------------------------------------------ */
+  --color-bg: #050505;
+  --color-bg-elevated: #08080a;
+  --color-surface: #0d0d0f;
+  --color-surface-2: #141418;
+  --color-surface-3: #1c1c22;
+
+  --color-text: #ffffff;
+  --color-muted: #a1a1aa;
+  --color-faint: #6b6b75;
+
+  --color-line: #1e1e24;
+  --color-line-soft: #141418;
+
+  /* Brand accent — "Diamond Blue" */
+  --color-diamond: #4caac9;
+  --color-diamond-light: #8fe3ff;
+  --color-diamond-bright: #b8f1ff;
+  --color-diamond-deep: #1b5c77;
+  --color-diamond-ink: #0a2733;
+
+  /* Summer accents — used sparingly as warm counterpoints to Diamond Blue
+     (sunset glows, festival-in-July highlights). Diamond Blue stays the lead
+     brand colour; these are seasoning, not a second brand palette. */
+  --color-sun: #ffb648;
+  --color-coral: #ff6f5e;
+  --color-sunset: #ff4f8b;
+
+  /* Semantic */
+  --color-success: #43d6a0;
+  --color-danger: #ff6b6b;
+  --color-warning: #ffc46b;
+
+  /* --- Typography -------------------------------------------------------- */
+  --font-display: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --text-display-xl: clamp(2.5rem, 9.5vw, 9.5rem);
+  --text-display-xl--line-height: 0.86;
+  --text-display-xl--letter-spacing: -0.04em;
+  --text-display-xl--font-weight: 800;
+
+  --text-display-lg: clamp(2.75rem, 8vw, 7rem);
+  --text-display-lg--line-height: 0.9;
+  --text-display-lg--letter-spacing: -0.035em;
+  --text-display-lg--font-weight: 800;
+
+  --text-display-md: clamp(2rem, 5vw, 4rem);
+  --text-display-md--line-height: 0.95;
+  --text-display-md--letter-spacing: -0.03em;
+  --text-display-md--font-weight: 800;
+
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.42em;
+  --text-eyebrow--font-weight: 600;
+
+  /* --- Radius ------------------------------------------------------------ */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* --- Shadow & Glow ----------------------------------------------------- */
+  --shadow-lift: 0 24px 60px -20px rgb(0 0 0 / 0.9);
+  --shadow-card: 0 1px 0 0 rgb(255 255 255 / 0.05) inset, 0 30px 80px -40px rgb(0 0 0 / 1);
+
+  /* --- Motion ------------------------------------------------------------ */
+  --ease-diamond: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-sharp: cubic-bezier(0.7, 0, 0.2, 1);
+
+  /* --- Breakpoints (explicit, so they are documented in one place) -------- */
+  --breakpoint-xs: 26rem;
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+  --breakpoint-2xl: 96rem;
+
+  /* --- Keyframe-backed animation utilities ------------------------------- */
+  --animate-shimmer: shimmer 2.6s linear infinite;
+  --animate-float-slow: float-slow 9s ease-in-out infinite;
+  --animate-pulse-glow: pulse-glow 4s ease-in-out infinite;
+  --animate-beam: beam 7s ease-in-out infinite;
+  --animate-spin-slow: spin 26s linear infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0) rotate(4deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes beam {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: translateX(-6%) scaleY(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(6%) scaleY(1.12);
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    background-color: var(--color-bg);
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    overflow-x: clip;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Locks scroll while the preloader, mobile nav or a modal is open. */
+  body[data-scroll-locked="true"] {
+    overflow: hidden;
+  }
+
+  ::selection {
+    background: var(--color-diamond);
+    color: #04141b;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-diamond-light);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-surface-3);
+    border-radius: 99px;
+    border: 3px solid var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-diamond-deep);
+  }
+}
+
+/* ==========================================================================
+   COMPONENT-LEVEL PRIMITIVES
+   Kept in CSS (not Tailwind classes) because they are multi-layer effects
+   reused across dozens of components.
+   ========================================================================== */
+
+@layer components {
+  /* Glassmorphism surface */
+  .glass {
+    background: color-mix(in oklab, var(--color-surface) 62%, transparent);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgb(255 255 255 / 0.07);
+  }
+
+  /* Hairline gradient border used on premium cards */
+  .edge {
+    position: relative;
+  }
+  .edge::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      140deg,
+      rgb(255 255 255 / 0.16),
+      rgb(255 255 255 / 0.02) 32%,
+      transparent 60%,
+      color-mix(in oklab, var(--color-diamond) 45%, transparent)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Diamond-blue radial glow, positioned by the consumer */
+  .glow-diamond {
+    background: radial-gradient(
+      circle at center,
+      color-mix(in oklab, var(--color-diamond) 55%, transparent) 0%,
+      transparent 68%
+    );
+    filter: blur(60px);
+  }
+
+  /* Fine film grain. Pure CSS: no image request, GPU-cheap. */
+  .grain {
+    position: fixed;
+    inset: -50%;
+    pointer-events: none;
+    opacity: 0.05;
+    z-index: 60;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  /* Text that fills with a moving diamond sheen */
+  .text-sheen {
+    background: linear-gradient(
+      100deg,
+      var(--color-text) 20%,
+      var(--color-diamond-bright) 42%,
+      var(--color-text) 62%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: var(--animate-shimmer);
+  }
+
+  /* Section rhythm — one place to change vertical spacing site-wide */
+  .section-y {
+    padding-block: clamp(5rem, 12vw, 11rem);
+  }
+
+  .container-x {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 96rem;
+    padding-inline: clamp(1.25rem, 5vw, 4.5rem);
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY / PERFORMANCE
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain {
+    display: none;
+  }
+}
+
+/* Effects that cost the most are dropped on coarse pointers (phones). */
+@media (pointer: coarse) {
+  .grain {
+    display: none;
+  }
 }

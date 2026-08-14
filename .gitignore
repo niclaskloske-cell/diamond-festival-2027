@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# internal dev-only artifacts (site-map colour-detection scripts + debug
+# renders, HR docs) — not part of the deployed app
+/scripts
+/docs
