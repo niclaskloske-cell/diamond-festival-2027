@@ -16,7 +16,7 @@ export const experienceChapters: ExperienceChapter[] = [
     id: "music",
     index: "01",
     title: "MUSIC",
-    line: "Drei Tage Programm ohne Leerlauf. Von Sonnenuntergang bis Sonnenaufgang.",
+    line: "Ein Abend, ein Mainact — Muhabbet live in voller Arena-Akustik.",
     image: null,
     hue: 196,
   },
@@ -24,7 +24,7 @@ export const experienceChapters: ExperienceChapter[] = [
     id: "lights",
     index: "02",
     title: "LIGHTS",
-    line: "Lichtdesign über die komplette Fläche. Jeder Drop sichtbar bis in die letzte Reihe.",
+    line: "Lichtdesign, das für Konzerthallen gebaut ist. Von jedem Platz sichtbar.",
     image: null,
     hue: 210,
   },
@@ -40,7 +40,7 @@ export const experienceChapters: ExperienceChapter[] = [
     id: "energy",
     index: "04",
     title: "ENERGY",
-    line: "Der Moment, in dem alle gleichzeitig die Hände oben haben.",
+    line: "Der Moment, in dem die ganze Arena mitsingt.",
     image: null,
     hue: 320,
   },
@@ -48,32 +48,8 @@ export const experienceChapters: ExperienceChapter[] = [
     id: "diamond",
     index: "05",
     title: "DIAMOND",
-    line: "Und danach zählst du die Tage bis zum nächsten Jahr.",
+    line: "Und danach zählst du die Tage bis zur nächsten Diamond Night.",
     image: null,
     hue: 188,
   },
 ];
-
-/** DIAMOND CREATOR LOUNGE feature list. */
-export const creatorFeatures = [
-  {
-    id: "lounge",
-    title: "Creator Lounge",
-    body: "Eigener, ruhiger Bereich mit Sitzgelegenheiten, Ladestationen und schnellem WLAN — zum Schneiden, Posten und Durchatmen.",
-  },
-  {
-    id: "spots",
-    title: "Foto- & Video-Spots",
-    body: "Gebaute Setups mit richtigem Licht. Keine Handy-Blitz-Bilder, sondern Content, der auch morgen noch gut aussieht.",
-  },
-  {
-    id: "networking",
-    title: "Networking",
-    body: "Creator, Fotograf:innen und Artists an einem Ort. Ohne Anmeldung, ohne Türsteher-Getue.",
-  },
-  {
-    id: "meet",
-    title: "Meet & Greets",
-    body: "Ausgewählte Slots mit Acts aus dem Line-up. Kontingente werden vor dem Festival vergeben.",
-  },
-] as const;

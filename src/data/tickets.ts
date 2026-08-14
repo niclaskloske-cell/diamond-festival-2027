@@ -3,7 +3,7 @@
  * totals stay exact and the values map 1:1 onto Stripe line items later.
  */
 
-export type TicketTierId = "early-bird" | "regular" | "late-bird" | "vip";
+export type TicketTierId = "early-bird" | "regular" | "vip";
 
 export type TicketTier = {
   id: TicketTierId;
@@ -27,11 +27,11 @@ export const ticketTiers: TicketTier[] = [
   {
     id: "early-bird",
     name: "EARLY BIRD",
-    priceCents: 1500,
+    priceCents: 2000,
     tagline: "Der günstigste Weg rein.",
     perks: [
-      "Zutritt an allen 3 Festivaltagen",
-      "Zugang zu allen Stages",
+      "Einlass zur Diamond Night",
+      "Zugang zur Sparkassen-Arena Landshut",
       "Streng limitiertes Kontingent",
     ],
     status: "on-sale",
@@ -41,12 +41,11 @@ export const ticketTiers: TicketTier[] = [
   {
     id: "regular",
     name: "REGULAR",
-    priceCents: 1850,
-    tagline: "Das Standard-Festivalticket.",
+    priceCents: 2500,
+    tagline: "Das Standard-Ticket für den Abend.",
     perks: [
-      "Zutritt an allen 3 Festivaltagen",
-      "Zugang zu allen Stages",
-      "Zugang zu Food- & Drink-Area",
+      "Einlass zur Diamond Night",
+      "Zugang zur Sparkassen-Arena Landshut",
     ],
     featured: true,
     status: "on-sale",
@@ -54,30 +53,15 @@ export const ticketTiers: TicketTier[] = [
     note: null,
   },
   {
-    id: "late-bird",
-    name: "LATE BIRD",
-    priceCents: 2000,
-    tagline: "Für alle, die sich Zeit gelassen haben.",
-    perks: [
-      "Zutritt an allen 3 Festivaltagen",
-      "Zugang zu allen Stages",
-      "Verfügbar bis zum Festivalstart",
-    ],
-    status: "on-sale",
-    maxPerOrder: 10,
-    note: null,
-  },
-  {
     id: "vip",
     name: "VIP",
-    priceCents: 8000,
-    tagline: "Eigener Eingang. Eigene Perspektive.",
+    priceCents: 6500,
+    tagline: "Meet & Greet mit Muhabbet inklusive.",
     perks: [
       "Alles aus Regular",
-      "Separater VIP-Eingang ohne Anstehen",
-      "Erhöhte Sichtplattform an der Mainstage",
-      "Eigene VIP-Bar & Sanitäranlagen",
-      "Zugang zur Diamond Creator Lounge",
+      "Meet & Greet mit Muhabbet",
+      "Bevorzugter Einlass",
+      "Beste Sichtkategorie im Haus",
     ],
     status: "on-sale",
     maxPerOrder: 6,

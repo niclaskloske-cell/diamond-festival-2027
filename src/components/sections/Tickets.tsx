@@ -17,7 +17,7 @@ export function Tickets() {
       <SectionHeading
         eyebrow="Tickets"
         title="GET YOUR TICKET"
-        description="Alle Tickets gelten für alle drei Festivaltage. Die Kontingente sind gestaffelt — sichere dir jetzt den besten Preis."
+        description="Ein Ticket gilt für den kompletten Abend in der Sparkassen-Arena Landshut. Die Kontingente sind gestaffelt — sichere dir jetzt den besten Preis."
       />
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

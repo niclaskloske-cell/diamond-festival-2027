@@ -12,7 +12,7 @@ export function Partners() {
       <SectionHeading
         eyebrow="Partner"
         title="PARTNER & SPONSOREN"
-        description="Die Marken und Betriebe, die das Diamond Festival möglich machen."
+        description="Die Marken und Betriebe, die die Diamond Night möglich machen."
       />
 
       {partners.length === 0 ? (

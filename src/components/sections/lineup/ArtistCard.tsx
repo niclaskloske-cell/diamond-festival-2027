@@ -70,7 +70,7 @@ export function ArtistCard({
       <div className="absolute left-4 top-4 flex flex-col items-start gap-1.5">
         {artist.headliner && (
           <span className="rounded-full bg-diamond/90 px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.14em] text-[#04141b]">
-            Headliner
+            Mainact
           </span>
         )}
         {isPlanned && (

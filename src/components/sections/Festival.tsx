@@ -11,7 +11,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 export function Festival() {
   return (
     <section id="festival" className="section-y container-x">
-      <SectionHeading eyebrow="Festival" title="THE FESTIVAL" />
+      <SectionHeading eyebrow="Event" title="DIE DIAMOND NIGHT" />
 
       {/* Fact strip */}
       <div className="mb-20 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:grid-cols-4">

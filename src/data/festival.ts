@@ -1,106 +1,111 @@
 /**
- * Central festival facts. Every component reads dates, location and copy from
+ * Central event facts. Every component reads dates, location and copy from
  * here — nothing about the event is hard-coded inside a component.
+ *
+ * Kept as `festival` internally (touches a lot of files) even though this is
+ * now a single-night indoor show, not a multi-day open-air festival — see
+ * the 2026-08-14 pivot from "Diamond Festival" to "Diamond Night".
  */
 
 export const festival = {
-  name: "Diamond Festival",
-  year: 2027,
-  fullName: "Diamond Festival 2027",
+  name: "Diamond Night",
+  year: 2026,
+  fullName: "Diamond Night — Muhabbet live",
   organiser: "Diamond Events",
 
-  /** ISO 8601 with explicit +02:00 (CEST) so the countdown is timezone-proof. */
-  startsAt: "2027-07-23T14:00:00+02:00",
-  endsAt: "2027-07-25T23:00:00+02:00",
-  /** TODO: replace with the confirmed gate time once the schedule is final. */
-  doorsOpen: "14:00",
+  /**
+   * Countdown target. Doors/show time aren't confirmed yet, so this points
+   * to the start of the event day (00:00) rather than asserting a specific
+   * hour — the UI says "Uhrzeit folgt" instead of showing a guessed time.
+   */
+  startsAt: "2026-12-05T00:00:00+01:00",
+  endsAt: "2026-12-06T00:00:00+01:00",
+  /** TODO: replace once Einlass/Beginn are confirmed by the venue. */
+  doorsOpen: "[EINLASSZEIT]",
 
-  dateLabel: "23. – 25. JULI 2027",
-  dateLabelShort: "23.–25.07.2027",
+  dateLabel: "05. DEZEMBER 2026",
+  dateLabelShort: "05.12.2026",
 
   location: {
-    city: "Wörth an der Isar",
+    city: "Landshut",
     country: "Deutschland",
     countryCode: "DE",
-    venue: "Festivalgelände Wörth an der Isar",
-    /** TODO: exact street address + coordinates of the festival GROUNDS
-     *  (the Baggersee site, see FestivalMap) once the site is contracted —
-     *  this must not be the organiser's private/contact address. */
-    street: "[STRASSE UND HAUSNUMMER]",
-    postalCode: "[PLZ]",
+    venue: "Sparkassen-Arena Landshut",
+    street: "Niedermayerstraße 100",
+    postalCode: "84036",
   },
 
   contact: {
     email: "hallo@eventsdiamond.de",
-    phone: "0163 8557552",
+    phone: "+49 870 2453 8793",
     press: "presse@diamondfestival.de",
   },
 
-  minAge: 16,
-  minAgeNote:
-    "Ab 16 Jahren mit gültigem Ausweis. Unter 18 nur mit Muttizettel (Erziehungsbeauftragung nach § 2 JuSchG) und volljähriger Begleitperson.",
+  /** TODO: confirm the actual age restriction for this event with the venue. */
+  minAge: null as number | null,
+  minAgeNote: "[ALTERSFREIGABE WIRD BEKANNT GEGEBEN]",
 
   /** Used by the JSON-LD Event schema and the OG tags. */
   siteUrl: "https://diamondfestival.de",
   ogImage: "/og.jpg",
 } as const;
 
-/** Three-day, three-headline structure for THE FESTIVAL section. */
+/** Fact strip for the event info section. */
 export const festivalFacts = [
   {
     id: "dates",
     label: "Termin",
-    value: "23. – 25.07.2027",
-    detail: "Freitag bis Sonntag. Anreise ab Freitagmittag.",
+    value: "05.12.2026",
+    detail: "Ein Abend, eine Bühne. Einlass- und Beginnzeit folgen.",
   },
   {
     id: "location",
     label: "Location",
-    value: "Wörth a. d. Isar",
-    detail: "Open-Air-Gelände in Niederbayern, direkt an der Isar.",
+    value: "Sparkassen-Arena",
+    detail: "Niedermayerstraße 100, 84036 Landshut.",
   },
   {
-    id: "doors",
-    label: "Einlass",
-    value: "ab 14:00",
-    detail: "Ticket + Ausweis am Eingang bereithalten. Kein Einlass ohne Bändchen.",
+    id: "mainact",
+    label: "Mainact",
+    value: "Muhabbet",
+    detail: "U. a. mit „Sie liegt in meinen Armen“.",
   },
   {
     id: "age",
     label: "Alter",
-    value: "16+",
-    detail: "Unter 18 nur mit Muttizettel und Begleitperson.",
+    value: "TBA",
+    detail: "Altersfreigabe wird rechtzeitig vor dem Event bekannt gegeben.",
   },
 ] as const;
 
-/** The immersive blocks of THE FESTIVAL section. */
+/** The immersive blocks of the event info section. */
 export const festivalBlocks = [
   {
-    id: "gelaende",
-    kicker: "01 — Gelände",
-    title: "EIN GELÄNDE,\nGEBAUT FÜR NÄCHTE",
-    body: "Mainstage mit vollem Line-Array, Lichtdesign über die komplette Fläche, Chill-Zonen zum Runterkommen und kurze Wege zwischen allem. Kein Laufen, kein Warten, kein Suchen.",
+    id: "arena",
+    kicker: "01 — Arena",
+    title: "EINE ARENA,\nGEBAUT FÜR SOUND",
+    body: "Die Sparkassen-Arena Landshut bringt volle Konzert-Akustik und klare Sichtlinien von jedem Platz — kein Open-Air-Wetterrisiko, kein langes Anstehen im Matsch.",
     accent: "diamond",
   },
   {
-    id: "musik",
-    kicker: "02 — Musik",
-    title: "EDM.\nHIP-HOP.\nNONSTOP.",
-    body: "Drei Tage durchgehendes Programm zwischen harten Drops und Rap-Sets. Lokale Acts am Nachmittag, die großen Namen nach Sonnenuntergang.",
+    id: "mainact",
+    kicker: "02 — Mainact",
+    title: "MUHABBET.\nLIVE.\nHAUTNAH.",
+    body: "Ein Abend mit einem der prägendsten Namen im deutschen R&B — u. a. mit seinem Hit „Sie liegt in meinen Armen“.",
     accent: "white",
   },
   {
-    id: "food",
-    kicker: "03 — Food & Drinks",
-    title: "FOOD, DAS\nKEIN FESTIVAL-\nFOOD IST",
-    body: "Kuratierte Foodtrucks statt Fritteusen-Einheitsbrei, vegetarisch und vegan an jedem Stand. Bars über das ganze Gelände verteilt, bargeldlos, ohne Schlange.",
+    id: "anfahrt",
+    kicker: "03 — Anfahrt",
+    title: "GUT ANGEBUNDEN,\nKURZE WEGE",
+    body: "Die Sparkassen-Arena liegt im Landshuter Stadtteil Schönbrunn mit Parkmöglichkeiten direkt am Gelände. Details zu ÖPNV und Parkplätzen folgen.",
     accent: "white",
   },
   {
     id: "vip",
     kicker: "04 — VIP",
     title: "VIP HEISST\nWIRKLICH VIP",
-    body: "Eigener Eingang, erhöhte Sichtplattform an der Mainstage, separate Bar und saubere Sanitäranlagen. Limitiertes Kontingent.",
+    body: "Bevorzugter Einlass und die beste Sichtkategorie im Haus. Limitiertes Kontingent.",
     accent: "diamond",
   },
 ] as const;

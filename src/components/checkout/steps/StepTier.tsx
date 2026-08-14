@@ -15,7 +15,7 @@ export function StepTier({
       <h3 className="font-display text-xl font-extrabold uppercase text-white">
         Ticket auswählen
       </h3>
-      <p className="mt-1 text-sm text-muted">Alle Tickets gelten für alle drei Festivaltage.</p>
+      <p className="mt-1 text-sm text-muted">Ein Ticket gilt für den kompletten Abend.</p>
 
       <div className="mt-6 space-y-3">
         {ticketTiers.map((tier) => {

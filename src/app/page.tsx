@@ -4,8 +4,6 @@ import { Hero } from "@/components/sections/Hero";
 import { Lineup } from "@/components/sections/Lineup";
 import { Tickets } from "@/components/sections/Tickets";
 import { Festival } from "@/components/sections/Festival";
-import { FestivalMap } from "@/components/sections/FestivalMap";
-import { CreatorLounge } from "@/components/sections/CreatorLounge";
 import { Experience } from "@/components/sections/Experience";
 import { SocialWall } from "@/components/sections/SocialWall";
 import { Partners } from "@/components/sections/Partners";
@@ -21,8 +19,6 @@ export default function Home() {
         <Lineup />
         <Tickets />
         <Festival />
-        <FestivalMap />
-        <CreatorLounge />
         <Experience />
         <SocialWall />
         <Partners />

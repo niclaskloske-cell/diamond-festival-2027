@@ -9,7 +9,7 @@ export default function AgbPage() {
   return (
     <LegalPage title="Allgemeine Geschäftsbedingungen">
       <p>
-        Die vollständigen AGB für den Ticketverkauf zum Diamond Festival 2027
+        Die vollständigen AGB für den Ticketverkauf zur Diamond Night
         werden vor dem Verkaufsstart veröffentlicht —
         unter anderem zu Vertragsschluss, Ticketpreisen, Widerrufsrecht,
         Umtausch/Stornierung und Einlassbedingungen.

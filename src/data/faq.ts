@@ -12,22 +12,28 @@ export const faqItems: FaqItem[] = [
   {
     id: "wann",
     category: "Allgemein",
-    question: "Wann findet das Diamond Festival 2027 statt?",
-    answer: `Vom Freitag, 23. Juli, bis Sonntag, 25. Juli 2027. Einlass ist täglich ab ${festival.doorsOpen} Uhr, das Programm läuft bis in die Nacht.`,
+    question: "Wann findet die Diamond Night statt?",
+    answer: `Am ${festival.dateLabel} in der ${festival.location.venue}. Einlass- und Beginnzeit werden rechtzeitig vor dem Event bekannt gegeben.`,
   },
   {
     id: "wo",
     category: "Allgemein",
-    question: "Wo findet das Festival statt?",
+    question: "Wo findet das Event statt?",
+    answer: `${festival.location.venue}, ${festival.location.street}, ${festival.location.postalCode} ${festival.location.city}.`,
+  },
+  {
+    id: "mainact",
+    category: "Allgemein",
+    question: "Wer tritt auf?",
     answer:
-      "Auf dem Open-Air-Gelände in Wörth an der Isar, Niederbayern. Die exakte Adresse und der Lageplan werden rechtzeitig vor dem Festival hier und per E-Mail bekannt gegeben.",
+      "Mainact des Abends ist Muhabbet, u. a. bekannt für „Sie liegt in meinen Armen“. Im Vorprogramm dabei sind DJ Shero und El Destrad, ein weiterer DJ-Slot wird noch bekannt gegeben.",
   },
   {
     id: "preis",
     category: "Tickets",
     question: "Wie viel kostet ein Ticket?",
     answer:
-      "Early Bird 15,00 €, Regular 18,50 €, Late Bird 20,00 €, VIP 80,00 €. Alle Tickets gelten für alle drei Festivaltage. Die Kontingente sind gestaffelt — sobald eine Stufe ausverkauft ist, gilt automatisch die nächste.",
+      "Early Bird 20,00 €, Regular 25,00 €, VIP 65,00 € inklusive Meet & Greet mit Muhabbet. Die Kontingente sind gestaffelt — sobald eine Stufe ausverkauft ist, gilt automatisch die nächste.",
   },
   {
     id: "alter",
@@ -40,56 +46,48 @@ export const faqItems: FaqItem[] = [
     category: "Tickets",
     question: "Was ist im VIP-Ticket enthalten?",
     answer:
-      "Separater Eingang ohne Anstehen, erhöhte Sichtplattform an der Mainstage, eigene VIP-Bar, saubere Sanitäranlagen und Zugang zur Diamond Creator Lounge. Das Kontingent ist stark limitiert.",
+      "Ein persönliches Meet & Greet mit Muhabbet, bevorzugter Einlass und die beste Sichtkategorie im Haus. Das Kontingent ist stark limitiert.",
   },
   {
     id: "umtausch",
     category: "Tickets",
     question: "Kann ich mein Ticket umtauschen oder zurückgeben?",
     answer:
-      "Tickets sind personalisiert und grundsätzlich vom Widerrufsrecht ausgenommen (§ 312g Abs. 2 Nr. 9 BGB). Eine Umpersonalisierung ist bis 14 Tage vor Festivalstart über den Support möglich.",
+      "Tickets sind personalisiert und grundsätzlich vom Widerrufsrecht ausgenommen (§ 312g Abs. 2 Nr. 9 BGB). Eine Umpersonalisierung ist bis 14 Tage vor dem Event über den Support möglich.",
   },
   {
     id: "parken",
     category: "Anreise",
     question: "Gibt es Parkplätze?",
     answer:
-      "Ja, es gibt ausgewiesene Besucherparkplätze in Gehweite zum Gelände. Details zu Kapazität, Gebühren und Shuttle-Anbindung folgen vor dem Festival.",
+      "Ja, an der Sparkassen-Arena Landshut stehen Parkmöglichkeiten direkt am Gelände zur Verfügung. Details zu Kapazität und Gebühren folgen vor dem Event.",
   },
   {
     id: "anreise",
     category: "Anreise",
-    question: "Wie komme ich ohne Auto hin?",
+    question: "Wie komme ich mit Bus/Bahn hin?",
     answer:
-      "Die genaue ÖPNV- und Shuttle-Planung steht noch nicht final fest und wird hier ergänzt, sobald sie bestätigt ist.",
+      "Die Sparkassen-Arena liegt im Landshuter Stadtteil Schönbrunn. Die genaue ÖPNV-Anbindung wird hier ergänzt, sobald sie final bestätigt ist.",
   },
   {
-    id: "essen",
+    id: "einlass",
     category: "Vor Ort",
-    question: "Darf ich eigenes Essen und Getränke mitbringen?",
+    question: "Was brauche ich für den Einlass?",
     answer:
-      "Eigene Speisen und Getränke sind auf dem Gelände nicht erlaubt. Leere, wiederverwendbare Trinkflaschen aus Kunststoff darfst du mitbringen und kostenlos an den Wasserstationen auffüllen.",
+      "Ticket und einen gültigen Ausweis. Taschenkontrolle ist möglich — Details zu erlaubtem Taschenformat und Gegenständen folgen vor dem Event.",
   },
   {
     id: "bezahlen",
     category: "Vor Ort",
     question: "Wie bezahle ich vor Ort?",
     answer:
-      "Bargeldlos. Alle Bars und Foodtrucks akzeptieren Karte und kontaktloses Bezahlen — kein Anstehen am Geldautomaten.",
+      "Bargeldlos an allen Bar- und Verkaufsständen in der Arena — kein Anstehen am Geldautomaten.",
   },
   {
-    id: "wetter",
+    id: "kontakt",
     category: "Vor Ort",
-    question: "Was passiert bei schlechtem Wetter?",
-    answer:
-      "Das Festival findet bei jedem Wetter statt. Nur wenn Behörden oder die Sicherheitsleitung den Betrieb aus Sicherheitsgründen untersagen, wird unterbrochen oder abgebrochen — in dem Fall informieren wir über die Website und alle Social-Kanäle.",
-  },
-  {
-    id: "creator",
-    category: "Vor Ort",
-    question: "Wie komme ich in die Creator Lounge?",
-    answer:
-      "Der Zugang ist im VIP-Ticket enthalten. Zusätzlich vergeben wir ein Kontingent an Creator-Akkreditierungen — die Bewerbung öffnet vor dem Festival.",
+    question: "An wen wende ich mich bei Fragen oder Problemen?",
+    answer: `Du erreichst Diamond Events telefonisch unter ${festival.contact.phone} oder per E-Mail an ${festival.contact.email}.`,
   },
 ];
 

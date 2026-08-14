@@ -6,6 +6,7 @@ import { Menu, X } from "lucide-react";
 
 import { DiamondMark } from "@/components/effects/DiamondMark";
 import { ButtonLink } from "@/components/ui/Button";
+import { festival } from "@/data/festival";
 import { navLinks } from "@/data/navigation";
 import { useScrollLock, useScrollSpy, useScrollY } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
@@ -41,7 +42,7 @@ export function Navbar() {
             >
               <DiamondMark className="size-5 text-diamond-light" />
               <span className="font-display text-sm font-extrabold tracking-[0.02em]">
-                DIAMOND FESTIVAL
+                {festival.name.toUpperCase()}
               </span>
             </a>
 

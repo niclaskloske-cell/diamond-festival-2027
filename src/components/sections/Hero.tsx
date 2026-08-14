@@ -98,7 +98,7 @@ export function Hero() {
           className="mb-6 flex items-center gap-2 text-eyebrow text-diamond-light"
         >
           <MapPin className="size-3.5" />
-          <span>WÖRTH AN DER ISAR</span>
+          <span>{festival.location.venue.toUpperCase()}</span>
         </motion.div>
 
         <h1 className="font-display text-display-xl uppercase text-white">
@@ -116,15 +116,15 @@ export function Hero() {
             transition={{ duration: 0.9, ease: EASE, delay: 0.18 }}
             className="block"
           >
-            FESTIVAL
+            NIGHT
           </motion.span>
           <motion.span
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: EASE, delay: 0.31 }}
-            className="text-sheen block"
+            className="text-sheen block text-display-md"
           >
-            2027
+            MIT MUHABBET
           </motion.span>
         </h1>
 
@@ -134,8 +134,8 @@ export function Hero() {
           transition={{ duration: 0.7, ease: EASE, delay: 0.5 }}
           className="mt-6 max-w-md text-lg text-muted"
         >
-          {festival.dateLabel} — drei Tage EDM, Hip-Hop und Diamond-Energie unter
-          freiem Himmel.
+          {festival.dateLabel} in der {festival.location.venue} — ein Abend mit
+          Muhabbet live, u. a. mit „Sie liegt in meinen Armen“.
         </motion.p>
 
         <motion.div
@@ -196,7 +196,7 @@ function Countdown() {
   if (cd.ready && cd.isOver) {
     return (
       <p className="text-eyebrow text-diamond-light">
-        DAS FESTIVAL LÄUFT — WIR SEHEN UNS DORT
+        DIE DIAMOND NIGHT LÄUFT — WIR SEHEN UNS DORT
       </p>
     );
   }

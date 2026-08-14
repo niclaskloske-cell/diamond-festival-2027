@@ -6,6 +6,7 @@ import { Clock, Lock, MapPinned, Music2 } from "lucide-react";
 import type { Artist } from "@/data/artists";
 import { Modal } from "@/components/ui/Modal";
 import { InstagramIcon, TikTokIcon, YouTubeIcon } from "@/components/effects/BrandIcons";
+import { festival } from "@/data/festival";
 import { cn } from "@/lib/utils";
 
 function hueFromSlug(slug: string) {
@@ -45,7 +46,7 @@ export function ArtistModal({
             <div className="mb-3 flex flex-wrap gap-2">
               {artist.headliner && (
                 <span className="inline-block rounded-full bg-diamond/90 px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.14em] text-[#04141b]">
-                  Headliner
+                  Mainact
                 </span>
               )}
               {artist.status === "planned" && (
@@ -84,7 +85,7 @@ export function ArtistModal({
               </span>
               <span className="flex items-center gap-1.5">
                 <MapPinned className="size-3.5 text-diamond-light" />
-                {artist.stage}
+                {festival.location.venue}
               </span>
             </div>
 

@@ -20,8 +20,8 @@ const inter = Inter({
   weight: ["400", "500", "600", "700"],
 });
 
-const title = `${festival.fullName} – Das Festival in ${festival.location.city}`;
-const description = `${festival.fullName}: ${festival.dateLabel} in ${festival.location.city}. EDM, Hip-Hop und drei Tage Diamond-Feeling. Jetzt Tickets sichern.`;
+const title = `${festival.fullName} – ${festival.dateLabel} in ${festival.location.city}`;
+const description = `${festival.fullName}: ${festival.dateLabel} in der ${festival.location.venue}, ${festival.location.city}. U. a. mit „Sie liegt in meinen Armen“. Jetzt Tickets sichern.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(festival.siteUrl),
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
 /** schema.org Event structured data for rich search results. */
 const eventJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Festival",
+  "@type": "MusicEvent",
   name: festival.fullName,
   startDate: festival.startsAt,
   endDate: festival.endsAt,
@@ -63,9 +63,15 @@ const eventJsonLd = {
     name: festival.location.venue,
     address: {
       "@type": "PostalAddress",
+      streetAddress: festival.location.street,
+      postalCode: festival.location.postalCode,
       addressLocality: festival.location.city,
       addressCountry: festival.location.countryCode,
     },
+  },
+  performer: {
+    "@type": "MusicGroup",
+    name: "Muhabbet",
   },
   image: [`${festival.siteUrl}${festival.ogImage}`],
   description,

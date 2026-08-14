@@ -5,7 +5,7 @@ export const navLinks: NavLink[] = [
   { label: "Home", href: "#home" },
   { label: "Line-Up", href: "#lineup" },
   { label: "Tickets", href: "#tickets" },
-  { label: "Festival", href: "#festival" },
+  { label: "Event", href: "#festival" },
   { label: "FAQ", href: "#faq" },
   { label: "Kontakt", href: "#kontakt" },
 ];
@@ -13,7 +13,7 @@ export const navLinks: NavLink[] = [
 export const footerNav: NavLink[] = [
   { label: "Tickets", href: "#tickets" },
   { label: "Line-Up", href: "#lineup" },
-  { label: "Festival", href: "#festival" },
+  { label: "Event", href: "#festival" },
   { label: "Partner", href: "#partner" },
   { label: "FAQ", href: "#faq" },
   { label: "Kontakt", href: "#kontakt" },
