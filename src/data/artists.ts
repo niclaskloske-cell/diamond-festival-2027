@@ -68,7 +68,7 @@ export const artists: Artist[] = [
     slug: "eldestrad",
     name: "El Destrad",
     genre: "HIP-HOP",
-    image: null,
+    image: "/artists/eldestrad.jpg",
     time: "",
     status: "confirmed",
     bio: "[KURZBESCHREIBUNG DES ACTS]",
