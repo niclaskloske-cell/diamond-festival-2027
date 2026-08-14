@@ -33,7 +33,7 @@ export const festival = {
   contact: {
     email: "hallo@eventsdiamond.de",
     phone: "0163 8557552",
-    press: "[PRESSE-E-MAIL]",
+    press: "presse@diamondfestival.de",
   },
 
   minAge: 16,
@@ -41,7 +41,7 @@ export const festival = {
     "Ab 16 Jahren mit gültigem Ausweis. Unter 18 nur mit Muttizettel (Erziehungsbeauftragung nach § 2 JuSchG) und volljähriger Begleitperson.",
 
   /** Used by the JSON-LD Event schema and the OG tags. */
-  siteUrl: "https://diamond-festival.de",
+  siteUrl: "https://diamondfestival.de",
   ogImage: "/og.jpg",
 } as const;
 

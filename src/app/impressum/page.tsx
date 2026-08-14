@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { LegalPage } from "@/components/layout/LegalPage";
+import { festival } from "@/data/festival";
 
 export const metadata: Metadata = { title: "Impressum" };
 
@@ -25,7 +26,9 @@ export default function ImpressumPage() {
         <br />
         Telefon: 0163 8557552
         <br />
-        E-Mail: hallo@eventsdiamond.de
+        E-Mail: {festival.contact.email}
+        <br />
+        Presse: {festival.contact.press}
       </p>
       <p>Umsatzsteuer-Identifikationsnummer: [USt-IdNr., FALLS VORHANDEN]</p>
       <p className="text-faint">
