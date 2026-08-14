@@ -29,6 +29,13 @@ export type Artist = {
    * "confirmed" when omitted.
    */
   status?: "confirmed" | "planned";
+  /**
+   * True for a booking that's real but not yet publicly named (kept back for
+   * reach/marketing reasons). The name still needs a value (used for a11y —
+   * screen readers, aria-labels) but the UI blurs it visually instead of
+   * showing readable text.
+   */
+  censored?: boolean;
   bio: string;
   socials: {
     instagram?: string;
@@ -48,8 +55,23 @@ export const artists: Artist[] = [
     time: "23:00 – 00:30",
     stage: "Mainstage",
     headliner: true,
+    status: "planned",
     bio: "[KURZBESCHREIBUNG DES ACTS — 1–2 Sätze für das Detail-Modal.]",
     socials: { instagram: "", tiktok: "", spotify: "" },
+  },
+  {
+    slug: "secret-headliner-sa",
+    name: "Geheimer Headliner",
+    genre: "[GENRE]",
+    image: null,
+    day: "SA",
+    time: "",
+    stage: "Mainstage",
+    headliner: true,
+    status: "planned",
+    censored: true,
+    bio: "Ein Act mit deutlich größerer Reichweite ist in Gesprächen. Der Name wird aus strategischen Gründen erst später enthüllt.",
+    socials: {},
   },
   {
     slug: "eldestrad",
@@ -60,17 +82,19 @@ export const artists: Artist[] = [
     time: "22:00 – 23:15",
     stage: "Mainstage",
     headliner: true,
+    status: "planned",
     bio: "[KURZBESCHREIBUNG DES ACTS]",
     socials: { instagram: "", spotify: "" },
   },
   {
-    slug: "artist-03",
-    name: "[ARTIST NAME 03]",
-    genre: "EDM / BIG ROOM",
+    slug: "2lade",
+    name: "2LADE",
+    genre: "[GENRE]",
     image: null,
     day: "SO",
-    time: "21:30 – 23:00",
+    time: "",
     stage: "Mainstage",
+    status: "planned",
     bio: "[KURZBESCHREIBUNG DES ACTS]",
     socials: { instagram: "" },
   },

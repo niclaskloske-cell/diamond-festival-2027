@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Plus } from "lucide-react";
+import { Lock, Plus } from "lucide-react";
 
 import type { Artist } from "@/data/artists";
 import { cn } from "@/lib/utils";
@@ -89,12 +89,29 @@ export function ArtistCard({
         <p className="text-[0.625rem] font-semibold uppercase tracking-[0.24em] text-diamond-light opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           {artist.time || "Zeit folgt"}
         </p>
-        <h3 className="mt-1 font-display text-2xl font-extrabold uppercase leading-none text-white sm:text-3xl">
-          {artist.name}
-        </h3>
-        <p className="mt-1.5 text-xs font-medium uppercase tracking-[0.14em] text-muted">
-          {artist.genre}
-        </p>
+        {artist.censored ? (
+          <>
+            <h3
+              aria-label={artist.name}
+              className="mt-1 select-none font-display text-2xl font-extrabold uppercase leading-none text-white blur-[7px] sm:text-3xl"
+            >
+              {artist.name}
+            </h3>
+            <p className="mt-1.5 flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.14em] text-warning">
+              <Lock className="size-3" />
+              Wird bald enthüllt
+            </p>
+          </>
+        ) : (
+          <>
+            <h3 className="mt-1 font-display text-2xl font-extrabold uppercase leading-none text-white sm:text-3xl">
+              {artist.name}
+            </h3>
+            <p className="mt-1.5 text-xs font-medium uppercase tracking-[0.14em] text-muted">
+              {artist.genre}
+            </p>
+          </>
+        )}
       </div>
     </motion.button>
   );

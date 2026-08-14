@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { Clock, MapPinned, Music2 } from "lucide-react";
+import { Clock, Lock, MapPinned, Music2 } from "lucide-react";
 
 import type { Artist } from "@/data/artists";
 import { Modal } from "@/components/ui/Modal";
 import { InstagramIcon, TikTokIcon, YouTubeIcon } from "@/components/effects/BrandIcons";
+import { cn } from "@/lib/utils";
 
 function hueFromSlug(slug: string) {
   let h = 0;
@@ -55,16 +56,28 @@ export function ArtistModal({
             </div>
             <h3
               id="artist-modal-title"
-              className="font-display text-3xl font-extrabold uppercase leading-none text-white sm:text-4xl"
+              aria-label={artist.censored ? artist.name : undefined}
+              className={cn(
+                "font-display text-3xl font-extrabold uppercase leading-none text-white sm:text-4xl",
+                artist.censored && "select-none blur-[8px]",
+              )}
             >
               {artist.name}
             </h3>
+            {artist.censored && (
+              <p className="mt-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-warning">
+                <Lock className="size-3.5" />
+                Wird bald enthüllt
+              </p>
+            )}
 
             <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">
-              <span className="flex items-center gap-1.5">
-                <Music2 className="size-3.5 text-diamond-light" />
-                {artist.genre}
-              </span>
+              {!artist.censored && (
+                <span className="flex items-center gap-1.5">
+                  <Music2 className="size-3.5 text-diamond-light" />
+                  {artist.genre}
+                </span>
+              )}
               <span className="flex items-center gap-1.5">
                 <Clock className="size-3.5 text-diamond-light" />
                 {artist.time || "Zeit folgt"}
