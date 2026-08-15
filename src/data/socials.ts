@@ -19,8 +19,8 @@ export const socials: SocialChannel[] = [
   {
     id: "instagram",
     label: "Instagram",
-    handle: "@diamondfestival2027",
-    url: "https://instagram.com/diamondfestival2027",
+    handle: "@diamondevents.de",
+    url: "https://instagram.com/diamondevents.de",
     blurb: "Line-up drops, Behind the Scenes, Ticket-Verlosungen.",
   },
   {
