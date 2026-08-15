@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Handshake } from "lucide-react";
 
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -51,9 +52,21 @@ export function Partners() {
                       : "bg-[radial-gradient(60%_60%_at_50%_50%,rgba(76,170,201,0.24)_0%,transparent_70%)]",
                   )}
                 />
-                <span className="relative font-display text-base font-extrabold uppercase text-white sm:text-lg">
-                  {partner.name}
-                </span>
+                {partner.logo ? (
+                  <div className="relative flex h-14 w-full items-center justify-center rounded-md bg-white px-5 py-3 sm:h-16">
+                    <Image
+                      src={partner.logo}
+                      alt={partner.name}
+                      width={200}
+                      height={60}
+                      className="h-full w-auto object-contain"
+                    />
+                  </div>
+                ) : (
+                  <span className="relative font-display text-base font-extrabold uppercase text-white sm:text-lg">
+                    {partner.name}
+                  </span>
+                )}
                 <span className="relative text-[0.625rem] font-semibold uppercase tracking-[0.16em] text-faint">
                   {partnerTierLabels[partner.tier]}
                 </span>

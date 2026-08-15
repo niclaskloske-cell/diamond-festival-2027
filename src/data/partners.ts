@@ -23,7 +23,16 @@ export type Partner = {
   status?: "confirmed" | "planned";
 };
 
-export const partners: Partner[] = [];
+export const partners: Partner[] = [
+  {
+    id: "drei-helmen",
+    name: "Drei Helmen",
+    tier: "partner",
+    logo: "/partners/drei-helmen.png",
+    url: "",
+    status: "confirmed",
+  },
+];
 
 export const partnerTierLabels: Record<PartnerTier, string> = {
   hauptsponsor: "Hauptsponsor",
