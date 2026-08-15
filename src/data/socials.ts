@@ -26,15 +26,15 @@ export const socials: SocialChannel[] = [
   {
     id: "tiktok",
     label: "TikTok",
-    handle: "@diamondfestival2027",
-    url: "https://tiktok.com/@diamondfestival2027",
+    handle: "@diamondevents.de",
+    url: "https://tiktok.com/@diamondevents.de",
     blurb: "Aftermovies, Recaps und alles, was zu laut für Instagram ist.",
   },
   {
     id: "youtube",
     label: "YouTube",
-    handle: "@diamondfestival2027",
-    url: "https://youtube.com/@diamondfestival2027",
+    handle: "@diamondevents.de",
+    url: "https://youtube.com/@diamondevents.de",
     blurb: "Der offizielle Aftermovie und volle Sets in Bildqualität.",
   },
 ];
