@@ -24,13 +24,20 @@ import { festival } from "@/data/festival";
 /* Contracts                                                                   */
 /* -------------------------------------------------------------------------- */
 
+/** The buyer — pays and gets the order confirmation, not necessarily an attendee. */
 export type Customer = {
   firstName: string;
   lastName: string;
-  /** ISO date, "YYYY-MM-DD". Printed on the ticket and checked against the 18+ rule. */
-  birthDate: string;
   email: string;
   phone: string;
+};
+
+/** One ticket's attendee. Printed on that ticket; checked against the 18+ rule. */
+export type TicketHolder = {
+  firstName: string;
+  lastName: string;
+  /** ISO date, "YYYY-MM-DD". */
+  birthDate: string;
 };
 
 export type CheckoutLineItem = {
@@ -43,6 +50,8 @@ export type CheckoutLineItem = {
 export type CheckoutRequest = {
   items: CheckoutLineItem[];
   customer: Customer;
+  /** One entry per ticket across all items, in the order tickets are issued. */
+  holders: TicketHolder[];
   /** Absolute URLs the provider redirects back to. */
   successUrl: string;
   cancelUrl: string;
@@ -64,12 +73,13 @@ export type PaidOrderSummary = {
   tierId: TicketTierId;
   tierName: string;
   quantity: number;
+  /** The buyer. */
   firstName: string;
   lastName: string;
-  /** ISO date as collected at checkout. */
-  birthDate: string;
   email: string;
   phone: string;
+  /** One entry per ticket, in position order. */
+  holders: TicketHolder[];
 };
 
 export interface PaymentProvider {
@@ -130,6 +140,32 @@ const unconfiguredProvider: PaymentProvider = {
  */
 const STRIPE_PAYMENT_METHODS = ["card", "paypal", "klarna"] as const;
 
+function holdersToMetadata(holders: TicketHolder[]): Record<string, string> {
+  const out: Record<string, string> = {};
+  holders.forEach((holder, i) => {
+    const n = i + 1;
+    out[`holder_${n}_firstName`] = holder.firstName;
+    out[`holder_${n}_lastName`] = holder.lastName;
+    out[`holder_${n}_birthDate`] = holder.birthDate;
+  });
+  return out;
+}
+
+function holdersFromMetadata(
+  meta: Record<string, string>,
+  quantity: number,
+): TicketHolder[] {
+  const holders: TicketHolder[] = [];
+  for (let i = 1; i <= quantity; i++) {
+    const firstName = meta[`holder_${i}_firstName`];
+    const lastName = meta[`holder_${i}_lastName`];
+    const birthDate = meta[`holder_${i}_birthDate`];
+    if (!firstName || !lastName || !birthDate) continue;
+    holders.push({ firstName, lastName, birthDate });
+  }
+  return holders;
+}
+
 /** Loads the SDK lazily so a missing key fails cleanly instead of at import. */
 async function stripeClient() {
   const key = process.env.STRIPE_SECRET_KEY;
@@ -171,14 +207,19 @@ const stripeProvider: PaymentProvider = {
           })),
           customer_email: req.customer.email,
           // Read back by the confirmation page — never trust the query string.
+          // Holders go in as indexed flat keys (holder_1_firstName, ...)
+          // rather than one JSON blob: Stripe caps each metadata VALUE at 500
+          // characters, and up to 10 attendees with long names can exceed
+          // that in a single field. Flat keys stay well under the separate
+          // 50-key limit even at the largest tier (max 10 tickets).
           metadata: {
             tierId: first.tierId,
             tierName: tier?.name ?? first.tierId,
             quantity: String(first.quantity),
             firstName: req.customer.firstName,
             lastName: req.customer.lastName,
-            birthDate: req.customer.birthDate,
             phone: req.customer.phone,
+            ...holdersToMetadata(req.holders),
           },
           success_url: `${req.successUrl}?order={CHECKOUT_SESSION_ID}`,
           cancel_url: req.cancelUrl,
@@ -223,6 +264,9 @@ const stripeProvider: PaymentProvider = {
       const tierId = meta.tierId as TicketTierId | undefined;
       if (!tierId || !getTier(tierId)) return null;
 
+      const holders = holdersFromMetadata(meta, quantity);
+      if (holders.length !== quantity) return null;
+
       return {
         reference: session.id,
         tierId,
@@ -230,9 +274,9 @@ const stripeProvider: PaymentProvider = {
         quantity,
         firstName: meta.firstName ?? "",
         lastName: meta.lastName ?? "",
-        birthDate: meta.birthDate ?? "",
         email: session.customer_email ?? "",
         phone: meta.phone ?? "",
+        holders,
       };
     } catch (error) {
       console.error("[stripe] getPaidOrder failed", error);

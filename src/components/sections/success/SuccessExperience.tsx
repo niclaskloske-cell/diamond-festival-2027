@@ -27,7 +27,6 @@ export function SuccessExperience({
   tickets: TicketCode[];
 }) {
   const reduced = useReducedMotion();
-  const fullName = `${order.firstName} ${order.lastName}`.trim();
 
   return (
     <main className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden bg-bg px-6 py-24">
@@ -73,28 +72,39 @@ export function SuccessExperience({
         className="edge glass relative mt-10 w-full max-w-sm rounded-lg p-6"
       >
         {tickets.length > 0 ? (
-          <div className="space-y-5">
-            {tickets.map((ticket) => (
-              <div key={ticket.code}>
-                {tickets.length > 1 && (
+          <div className="space-y-6">
+            {tickets.map((ticket) => {
+              const holder = order.holders[ticket.position - 1];
+              return (
+                <div key={ticket.code}>
                   <p className="mb-2 text-center text-xs font-semibold uppercase tracking-[0.14em] text-diamond-light">
-                    Ticket {ticket.position} von {tickets.length}
+                    {tickets.length > 1
+                      ? `Ticket ${ticket.position} von ${tickets.length}`
+                      : "Dein Ticket"}
                   </p>
-                )}
-                {/* Weiße Platte: QR-Leser brauchen den hellen Rand ringsum. */}
-                <div className="flex justify-center rounded-md bg-white p-5">
-                  <div
-                    className="size-40 [&>svg]:size-full"
-                    role="img"
-                    aria-label={`QR-Code für Ticket ${ticket.code}`}
-                    dangerouslySetInnerHTML={{ __html: ticket.qrSvg }}
-                  />
+                  {/* Weiße Platte: QR-Leser brauchen den hellen Rand ringsum. */}
+                  <div className="flex justify-center rounded-md bg-white p-5">
+                    <div
+                      className="size-40 [&>svg]:size-full"
+                      role="img"
+                      aria-label={`QR-Code für Ticket ${ticket.code}`}
+                      dangerouslySetInnerHTML={{ __html: ticket.qrSvg }}
+                    />
+                  </div>
+                  <p className="mt-2 text-center font-mono text-xs tracking-wide text-muted">
+                    {ticket.code}
+                  </p>
+                  {holder && (
+                    <p className="mt-1 text-center text-sm text-white">
+                      {holder.firstName} {holder.lastName}
+                      {holder.birthDate && (
+                        <span className="text-muted"> · geb. {formatDate(holder.birthDate)}</span>
+                      )}
+                    </p>
+                  )}
                 </div>
-                <p className="mt-2 text-center font-mono text-xs tracking-wide text-muted">
-                  {ticket.code}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <TicketsPending />
@@ -103,20 +113,11 @@ export function SuccessExperience({
         <dl className="mt-6 space-y-3 text-sm">
           <Row label="Bestellnummer" value={orderNumber} mono />
           <Row label="Ticket" value={`${order.quantity} × ${order.tierName}`} />
-          {fullName && <Row label="Name" value={fullName} />}
-          {order.birthDate && (
-            <Row label="Geburtsdatum" value={formatDate(order.birthDate)} />
-          )}
           <Row label="Datum" value={festival.dateLabel} />
           <Row label="Einlass" value={`${festival.doorsOpen}, Beginn ${festival.showStart}`} />
         </dl>
 
-        <DownloadButton
-          order={order}
-          orderNumber={orderNumber}
-          fullName={fullName}
-          tickets={tickets}
-        />
+        <DownloadButton order={order} orderNumber={orderNumber} tickets={tickets} />
       </motion.div>
 
       <motion.div
@@ -158,12 +159,10 @@ function TicketsPending() {
 function DownloadButton({
   order,
   orderNumber,
-  fullName,
   tickets,
 }: {
   order: PaidOrderSummary;
   orderNumber: string;
-  fullName: string;
   tickets: TicketCode[];
 }) {
   const [saved, setSaved] = useState(false);
@@ -171,7 +170,12 @@ function DownloadButton({
   const handleDownload = () => {
     const ticketLines =
       tickets.length > 0
-        ? tickets.map((t) => `  Ticket ${t.position}:   ${t.code}`)
+        ? tickets.map((t) => {
+            const holder = order.holders[t.position - 1];
+            const name = holder ? `${holder.firstName} ${holder.lastName}` : "";
+            const birth = holder ? formatDate(holder.birthDate) : "";
+            return `  Ticket ${t.position}:   ${t.code}   —   ${name}${birth ? `, geb. ${birth}` : ""}`;
+          })
         : ["  (Codes werden nachgeliefert)"];
 
     const lines = [
@@ -179,8 +183,7 @@ function DownloadButton({
       "",
       `Bestellnummer:  ${orderNumber}`,
       `Ticket:         ${order.quantity} × ${order.tierName}`,
-      `Name:           ${fullName}`,
-      `Geburtsdatum:   ${formatDate(order.birthDate)}`,
+      `Kontakt:        ${order.firstName} ${order.lastName} · ${order.email}`,
       "",
       "Ticketcodes (am Einlass scannen lassen):",
       ...ticketLines,

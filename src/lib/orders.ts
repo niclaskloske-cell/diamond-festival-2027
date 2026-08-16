@@ -5,7 +5,7 @@
 
 import type { TicketTierId } from "@/data/tickets";
 import { festival } from "@/data/festival";
-import type { Customer } from "./payments";
+import type { Customer, TicketHolder } from "./payments";
 
 export type OrderStatus = "pending" | "paid" | "cancelled" | "refunded";
 
@@ -48,7 +48,9 @@ export function orderNumber(reference: string): string {
 /* Validation — shared by client (inline field errors) and server (hard gate)  */
 /* -------------------------------------------------------------------------- */
 
+/** Buyer/contact errors — no birth date here, that lives per ticket holder now. */
 export type FieldErrors = Partial<Record<keyof Customer, string>>;
+export type HolderFieldErrors = Partial<Record<keyof TicketHolder, string>>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 const PHONE_RE = /^[+0][\d\s/()-]{6,20}$/;
@@ -65,6 +67,7 @@ export function ageOn(birthDate: string, reference: Date): number {
   return age;
 }
 
+/** Buyer contact — the person paying, not necessarily any of the attendees. */
 export function validateCustomer(input: Partial<Customer>): FieldErrors {
   const errors: FieldErrors = {};
 
@@ -76,8 +79,31 @@ export function validateCustomer(input: Partial<Customer>): FieldErrors {
   else if (input.lastName.trim().length < 2)
     errors.lastName = "Mindestens 2 Zeichen.";
 
-  // Personalised tickets carry the birth date, and the event is 18+ — so the
-  // age is checked against the event date, not against today.
+  if (!input.email?.trim()) errors.email = "Bitte E-Mail-Adresse angeben.";
+  else if (!EMAIL_RE.test(input.email.trim()))
+    errors.email = "Diese E-Mail-Adresse sieht nicht gültig aus.";
+
+  if (!input.phone?.trim()) errors.phone = "Bitte Telefonnummer angeben.";
+  else if (!PHONE_RE.test(input.phone.trim()))
+    errors.phone = "Bitte eine gültige Telefonnummer angeben.";
+
+  return errors;
+}
+
+/**
+ * One ticket's attendee. Every ticket is personalised, so every holder is
+ * checked against the 18+ rule — that's who shows up at the door, not
+ * necessarily the buyer.
+ */
+export function validateHolder(input: Partial<TicketHolder>): HolderFieldErrors {
+  const errors: HolderFieldErrors = {};
+
+  if (!input.firstName?.trim()) errors.firstName = "Bitte Vornamen angeben.";
+  else if (input.firstName.trim().length < 2) errors.firstName = "Mindestens 2 Zeichen.";
+
+  if (!input.lastName?.trim()) errors.lastName = "Bitte Nachnamen angeben.";
+  else if (input.lastName.trim().length < 2) errors.lastName = "Mindestens 2 Zeichen.";
+
   const birthDate = input.birthDate?.trim();
   if (!birthDate) {
     errors.birthDate = "Bitte Geburtsdatum angeben.";
@@ -92,16 +118,15 @@ export function validateCustomer(input: Partial<Customer>): FieldErrors {
     }
   }
 
-  if (!input.email?.trim()) errors.email = "Bitte E-Mail-Adresse angeben.";
-  else if (!EMAIL_RE.test(input.email.trim()))
-    errors.email = "Diese E-Mail-Adresse sieht nicht gültig aus.";
-
-  if (!input.phone?.trim()) errors.phone = "Bitte Telefonnummer angeben.";
-  else if (!PHONE_RE.test(input.phone.trim()))
-    errors.phone = "Bitte eine gültige Telefonnummer angeben.";
-
   return errors;
 }
 
-export const hasErrors = (errors: FieldErrors) =>
+export function validateHolders(inputs: Partial<TicketHolder>[]): HolderFieldErrors[] {
+  return inputs.map(validateHolder);
+}
+
+export const hasErrors = (errors: FieldErrors | HolderFieldErrors) =>
   Object.keys(errors).length > 0;
+
+export const holdersHaveErrors = (errorsList: HolderFieldErrors[]) =>
+  errorsList.some(hasErrors);

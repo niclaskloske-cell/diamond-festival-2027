@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getTier, calculateOrderTotals, tierStatus } from "@/data/tickets";
-import { validateCustomer, hasErrors } from "@/lib/orders";
+import { validateCustomer, validateHolders, hasErrors, holdersHaveErrors } from "@/lib/orders";
 import {
   CheckoutError,
   createCheckoutSession,
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const { items, customer } = (body ?? {}) as Partial<CheckoutRequest>;
+  const { items, customer, holders } = (body ?? {}) as Partial<CheckoutRequest>;
 
   if (!Array.isArray(items) || items.length === 0) {
     return NextResponse.json(
@@ -81,6 +81,29 @@ export async function POST(request: Request) {
     });
   }
 
+  // Genau ein Inhaber pro bestelltem Ticket — jedes Ticket ist personalisiert.
+  const totalQuantity = priced.reduce((sum, item) => sum + item.quantity, 0);
+  if (!Array.isArray(holders) || holders.length !== totalQuantity) {
+    return NextResponse.json(
+      {
+        code: "INVALID_REQUEST",
+        message: `Bitte für jedes der ${totalQuantity} Tickets Name und Geburtsdatum angeben.`,
+      },
+      { status: 422 },
+    );
+  }
+  const holderErrors = validateHolders(holders);
+  if (holdersHaveErrors(holderErrors)) {
+    return NextResponse.json(
+      {
+        code: "INVALID_REQUEST",
+        message: "Bitte prüfe die Angaben zu den Ticketinhabern.",
+        holderErrors,
+      },
+      { status: 422 },
+    );
+  }
+
   const origin = new URL(request.url).origin;
   const totals = calculateOrderTotals(
     priced[0].unitPriceCents,
@@ -91,6 +114,7 @@ export async function POST(request: Request) {
     const session = await createCheckoutSession({
       items: priced,
       customer: customer!,
+      holders,
       successUrl: `${origin}/tickets/success`,
       cancelUrl: `${origin}/tickets`,
       idempotencyKey: request.headers.get("x-idempotency-key") ?? undefined,

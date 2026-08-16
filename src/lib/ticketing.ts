@@ -64,12 +64,13 @@ export async function issueTickets(
       tierId: order.tierId,
       tierName: order.tierName,
       quantity: order.quantity,
+      // Käufer/in — die Person, die am Ticket steht, kommt aus `holders`.
       firstName: order.firstName,
       lastName: order.lastName,
-      birthDate: order.birthDate,
       email: order.email,
       phone: order.phone || undefined,
       totalCents: (tier?.priceCents ?? 0) * order.quantity,
+      holders: order.holders,
     }),
     // Der Einlass hängt daran: lieber laut scheitern als stumm hängen.
     signal: AbortSignal.timeout(10_000),

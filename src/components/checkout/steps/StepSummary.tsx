@@ -1,11 +1,12 @@
 import type { TicketTier } from "@/data/tickets";
-import type { Customer } from "@/lib/payments";
+import type { Customer, TicketHolder } from "@/lib/payments";
 import { formatDate, formatPrice } from "@/lib/utils";
 
 export function StepSummary({
   tier,
   quantity,
   customer,
+  holders,
   subtotalCents,
   feeCents,
   totalCents,
@@ -13,6 +14,7 @@ export function StepSummary({
   tier: TicketTier;
   quantity: number;
   customer: Customer;
+  holders: TicketHolder[];
   subtotalCents: number;
   feeCents: number;
   totalCents: number;
@@ -58,12 +60,26 @@ export function StepSummary({
       )}
 
       <div className="mt-4 rounded-md border border-white/10 bg-surface-2 p-4 text-sm text-muted">
-        <p className="font-semibold text-white">
+        <p className="font-semibold text-white">Kontakt</p>
+        <p>
           {customer.firstName} {customer.lastName}
         </p>
-        {customer.birthDate && <p>geb. {formatDate(customer.birthDate)}</p>}
         <p>{customer.email}</p>
         <p>{customer.phone}</p>
+      </div>
+
+      <div className="mt-4 divide-y divide-white/10 rounded-md border border-white/10 bg-surface-2">
+        {holders.map((holder, i) => (
+          <div key={i} className="flex items-baseline justify-between p-4 text-sm">
+            <span className="text-faint">Ticket {i + 1}</span>
+            <span className="text-right text-white">
+              {holder.firstName} {holder.lastName}
+              {holder.birthDate && (
+                <span className="ml-2 text-muted">geb. {formatDate(holder.birthDate)}</span>
+              )}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   );

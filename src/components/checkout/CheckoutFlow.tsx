@@ -19,17 +19,19 @@ import {
   type TicketStatusMap,
   type TicketTierId,
 } from "@/data/tickets";
-import { validateCustomer, hasErrors, type FieldErrors } from "@/lib/orders";
-import type { Customer } from "@/lib/payments";
+import {
+  validateCustomer,
+  validateHolders,
+  hasErrors,
+  holdersHaveErrors,
+  type FieldErrors,
+  type HolderFieldErrors,
+} from "@/lib/orders";
+import type { Customer, TicketHolder } from "@/lib/payments";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
-const EMPTY_CUSTOMER: Customer = {
-  firstName: "",
-  lastName: "",
-  birthDate: "",
-  email: "",
-  phone: "",
-};
+const EMPTY_CUSTOMER: Customer = { firstName: "", lastName: "", email: "", phone: "" };
+const emptyHolder = (): TicketHolder => ({ firstName: "", lastName: "", birthDate: "" });
 
 /**
  * Modal shell. `CheckoutFlowContent` is remounted via `key={state.nonce}` on
@@ -63,17 +65,38 @@ function CheckoutFlowContent({
   const [quantity, setQuantity] = useState(1);
   const [customer, setCustomer] = useState<Customer>(EMPTY_CUSTOMER);
   const [errors, setErrors] = useState<FieldErrors>({});
+  // Ein Eintrag pro Ticket — jedes Ticket ist personalisiert, auch wenn die
+  // ganze Bestellung für eine einzige Person ist.
+  const [holders, setHolders] = useState<TicketHolder[]>([emptyHolder()]);
+  const [holderErrors, setHolderErrors] = useState<HolderFieldErrors[]>([]);
   const [paying, setPaying] = useState(false);
   const [payError, setPayError] = useState<string | null>(null);
 
   const tier = tierId ? getTier(tierId) : undefined;
   const totals = tier ? calculateOrderTotals(tier.priceCents, quantity) : null;
 
+  const changeQuantity = (next: number) => {
+    setQuantity(next);
+    setHolders((prev) => {
+      if (next === prev.length) return prev;
+      if (next < prev.length) return prev.slice(0, next);
+      return [...prev, ...Array.from({ length: next - prev.length }, emptyHolder)];
+    });
+  };
+
+  const updateHolder = (index: number, field: keyof TicketHolder, value: string) => {
+    setHolders((prev) =>
+      prev.map((h, i) => (i === index ? { ...h, [field]: value } : h)),
+    );
+  };
+
   const goNext = () => {
     if (step === 3) {
       const fieldErrors = validateCustomer(customer);
+      const holderFieldErrors = validateHolders(holders);
       setErrors(fieldErrors);
-      if (hasErrors(fieldErrors)) return;
+      setHolderErrors(holderFieldErrors);
+      if (hasErrors(fieldErrors) || holdersHaveErrors(holderFieldErrors)) return;
     }
     setStep((s) => Math.min(5, s + 1));
   };
@@ -90,6 +113,7 @@ function CheckoutFlowContent({
         body: JSON.stringify({
           items: [{ tierId: tier.id, quantity }],
           customer,
+          holders,
         }),
       });
       const data = await res.json();
@@ -134,7 +158,7 @@ function CheckoutFlowContent({
               />
             )}
             {step === 2 && tier && (
-              <StepQuantity tier={tier} quantity={quantity} onChange={setQuantity} />
+              <StepQuantity tier={tier} quantity={quantity} onChange={changeQuantity} />
             )}
             {step === 3 && (
               <StepCustomer
@@ -143,6 +167,9 @@ function CheckoutFlowContent({
                 onChange={(field, value) =>
                   setCustomer((c) => ({ ...c, [field]: value }))
                 }
+                holders={holders}
+                holderErrors={holderErrors}
+                onHolderChange={updateHolder}
               />
             )}
             {step === 4 && tier && totals && (
@@ -150,6 +177,7 @@ function CheckoutFlowContent({
                 tier={tier}
                 quantity={quantity}
                 customer={customer}
+                holders={holders}
                 {...totals}
               />
             )}
