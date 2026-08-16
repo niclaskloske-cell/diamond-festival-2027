@@ -7,6 +7,7 @@ import {
   createCheckoutSession,
   type CheckoutRequest,
 } from "@/lib/payments";
+import { resolveOrigin } from "@/lib/utils";
 
 export const runtime = "nodejs";
 
@@ -104,7 +105,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const origin = new URL(request.url).origin;
+  const origin = resolveOrigin(request);
   const totals = calculateOrderTotals(
     priced[0].unitPriceCents,
     priced[0].quantity,

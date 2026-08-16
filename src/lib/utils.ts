@@ -34,3 +34,24 @@ export function clamp(value: number, min: number, max: number) {
 export function pad(n: number) {
   return n.toString().padStart(2, "0");
 }
+
+/**
+ * The public-facing origin a request actually arrived on. Not the same as
+ * `new URL(request.url).origin` behind every host: Vercel's edge preserves
+ * the real Host header, but Render's proxy forwards to the app with an
+ * internal Host like `localhost:10000` — using `request.url` there silently
+ * built Stripe redirect URLs pointing at "localhost". `x-forwarded-host` /
+ * `x-forwarded-proto` are the standard reverse-proxy headers and are set
+ * correctly by both, so they're checked first.
+ */
+export function resolveOrigin(request: Request): string {
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  if (forwardedHost) {
+    const forwardedProto = request.headers.get("x-forwarded-proto") ?? "https";
+    // Can be a comma-separated list when the request passed multiple proxies.
+    const host = forwardedHost.split(",")[0].trim();
+    const proto = forwardedProto.split(",")[0].trim();
+    return `${proto}://${host}`;
+  }
+  return new URL(request.url).origin;
+}
