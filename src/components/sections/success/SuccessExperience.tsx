@@ -117,7 +117,7 @@ export function SuccessExperience({
           <Row label="Einlass" value={`${festival.doorsOpen}, Beginn ${festival.showStart}`} />
         </dl>
 
-        <DownloadButton order={order} orderNumber={orderNumber} tickets={tickets} />
+        {tickets.length > 0 && <DownloadButton order={order} />}
       </motion.div>
 
       <motion.div
@@ -153,62 +153,21 @@ function TicketsPending() {
 }
 
 /**
- * Writes the order to a .txt the guest can keep. Built in the browser from
- * data already on the page — no round-trip, and it works offline once loaded.
+ * Lädt das Ticket-PDF vom Server. Es wird bei jedem Klick frisch erzeugt —
+ * `/api/tickets/pdf` prüft die Zahlung erneut bei Stripe, statt der URL zu
+ * vertrauen, genau wie diese Seite selbst. Ein echter Anchor-Klick statt
+ * `location.href`, damit das kein SPA-Navigationsversuch ist, sondern klar
+ * als Datei-Download behandelt wird.
  */
-function DownloadButton({
-  order,
-  orderNumber,
-  tickets,
-}: {
-  order: PaidOrderSummary;
-  orderNumber: string;
-  tickets: TicketCode[];
-}) {
+function DownloadButton({ order }: { order: PaidOrderSummary }) {
   const [saved, setSaved] = useState(false);
 
   const handleDownload = () => {
-    const ticketLines =
-      tickets.length > 0
-        ? tickets.map((t) => {
-            const holder = order.holders[t.position - 1];
-            const name = holder ? `${holder.firstName} ${holder.lastName}` : "";
-            const birth = holder ? formatDate(holder.birthDate) : "";
-            return `  Ticket ${t.position}:   ${t.code}   —   ${name}${birth ? `, geb. ${birth}` : ""}`;
-          })
-        : ["  (Codes werden nachgeliefert)"];
-
-    const lines = [
-      `${festival.fullName.toUpperCase()}`,
-      "",
-      `Bestellnummer:  ${orderNumber}`,
-      `Ticket:         ${order.quantity} × ${order.tierName}`,
-      `Kontakt:        ${order.firstName} ${order.lastName} · ${order.email}`,
-      "",
-      "Ticketcodes (am Einlass scannen lassen):",
-      ...ticketLines,
-      "",
-      `Datum:          ${festival.dateLabel}`,
-      `Einlass:        ${festival.doorsOpen}, Beginn ${festival.showStart}`,
-      `Ort:            ${festival.location.venue}`,
-      `                ${festival.location.street}, ${festival.location.postalCode} ${festival.location.city}`,
-      "",
-      `Einlass ab 18 Jahren — bitte Ausweis mitbringen.`,
-      "",
-      `Support:        ${festival.contact.email} · ${festival.contact.phone}`,
-      "",
-    ].join("\n");
-
-    const url = URL.createObjectURL(
-      new Blob([lines], { type: "text/plain;charset=utf-8" }),
-    );
     const link = document.createElement("a");
-    link.href = url;
-    link.download = `diamond-night-${orderNumber}.txt`;
+    link.href = `/api/tickets/pdf?order=${encodeURIComponent(order.reference)}`;
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(url);
 
     setSaved(true);
     window.setTimeout(() => setSaved(false), 2500);
@@ -222,7 +181,7 @@ function DownloadButton({
       className="mt-6 w-full"
       icon={saved ? <Check className="size-4" /> : <Download className="size-4" />}
     >
-      {saved ? "Gespeichert" : "Bestelldaten sichern"}
+      {saved ? "Download gestartet" : "Tickets als PDF herunterladen"}
     </Button>
   );
 }
