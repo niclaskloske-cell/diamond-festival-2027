@@ -14,7 +14,7 @@ export function EmptyOrderState() {
         Diese Seite zeigt deine Bestellbestätigung nach einem abgeschlossenen
         Ticketkauf. Es liegt aktuell keine gültige Bestellung vor.
       </p>
-      <ButtonLink href="/#tickets" className="mt-8" icon={<ArrowLeft className="size-4" />}>
+      <ButtonLink href="/tickets" className="mt-8" icon={<ArrowLeft className="size-4" />}>
         Zu den Tickets
       </ButtonLink>
     </main>

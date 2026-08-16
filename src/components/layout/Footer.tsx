@@ -59,14 +59,14 @@ export function Footer() {
 
         <div className="mt-12 grid grid-cols-2 gap-y-3 gap-x-6 border-t border-white/10 pt-10 sm:flex sm:flex-wrap sm:gap-8">
           {footerNav.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               data-cursor="link"
               className="text-sm font-medium text-muted transition-colors hover:text-white"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </div>
 

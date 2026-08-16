@@ -13,15 +13,12 @@ export const festival = {
   fullName: "Diamond Night — Muhabbet live",
   organiser: "Diamond Events",
 
-  /**
-   * Countdown target. Doors/show time aren't confirmed yet, so this points
-   * to the start of the event day (00:00) rather than asserting a specific
-   * hour — the UI says "Uhrzeit folgt" instead of showing a guessed time.
-   */
-  startsAt: "2026-12-05T00:00:00+01:00",
+  /** Countdown target — show start, not doors. */
+  startsAt: "2026-12-05T21:00:00+01:00",
   endsAt: "2026-12-06T00:00:00+01:00",
-  /** TODO: replace once Einlass/Beginn are confirmed by the venue. */
-  doorsOpen: "[EINLASSZEIT]",
+  doorsAt: "2026-12-05T20:00:00+01:00",
+  doorsOpen: "20:00 Uhr",
+  showStart: "21:00 Uhr",
 
   dateLabel: "05. DEZEMBER 2026",
   dateLabelShort: "05.12.2026",
@@ -36,17 +33,19 @@ export const festival = {
   },
 
   contact: {
-    email: "hallo@eventsdiamond.de",
-    phone: "+49 870 2453 8793",
-    press: "presse@diamondfestival.de",
+    /** General enquiries — also the recipient of the contact form. */
+    email: "support@diamond-night.de",
+    phone: "08702 4538793",
+    press: "presse@diamond-night.de",
+    /** Sender address for order confirmations / e-tickets. */
+    tickets: "tickets@diamond-night.de",
   },
 
-  /** TODO: confirm the actual age restriction for this event with the venue. */
-  minAge: null as number | null,
-  minAgeNote: "[ALTERSFREIGABE WIRD BEKANNT GEGEBEN]",
+  minAge: 18 as number | null,
+  minAgeNote: "Einlass ab 18 Jahren — Ausweiskontrolle am Einlass.",
 
   /** Used by the JSON-LD Event schema and the OG tags. */
-  siteUrl: "https://diamondfestival.de",
+  siteUrl: "https://diamond-night.de",
   ogImage: "/og.jpg",
 } as const;
 
@@ -56,7 +55,7 @@ export const festivalFacts = [
     id: "dates",
     label: "Termin",
     value: "05.12.2026",
-    detail: "Ein Abend, eine Bühne. Einlass- und Beginnzeit folgen.",
+    detail: "Ein Abend, eine Bühne. Einlass 20:00 Uhr, Beginn 21:00 Uhr.",
   },
   {
     id: "location",
@@ -73,8 +72,8 @@ export const festivalFacts = [
   {
     id: "age",
     label: "Alter",
-    value: "TBA",
-    detail: "Altersfreigabe wird rechtzeitig vor dem Event bekannt gegeben.",
+    value: "18+",
+    detail: "Einlass ab 18 Jahren. Bitte Ausweis mitbringen.",
   },
 ] as const;
 
@@ -98,7 +97,7 @@ export const festivalBlocks = [
     id: "anfahrt",
     kicker: "03 — Anfahrt",
     title: "GUT ANGEBUNDEN,\nKURZE WEGE",
-    body: "Die Sparkassen-Arena liegt im Landshuter Stadtteil Schönbrunn mit Parkmöglichkeiten direkt am Gelände. Details zu ÖPNV und Parkplätzen folgen.",
+    body: "Vom Landshuter Hauptbahnhof fährt die Linie 603 direkt zur Haltestelle Sparkassen-Arena. Parkplätze gibt es direkt am Gelände — first come, first served.",
     accent: "white",
   },
   {

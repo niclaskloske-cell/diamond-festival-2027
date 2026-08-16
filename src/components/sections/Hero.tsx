@@ -144,7 +144,7 @@ export function Hero() {
           transition={{ duration: 0.7, ease: EASE, delay: 0.62 }}
           className="mt-10 flex flex-wrap items-center gap-4"
         >
-          <ButtonLink href="#tickets" size="lg" icon={<ArrowRight className="size-4" />}>
+          <ButtonLink href="/tickets" size="lg" icon={<ArrowRight className="size-4" />}>
             Tickets sichern
           </ButtonLink>
           <ButtonLink href="#lineup" size="lg" variant="outline">

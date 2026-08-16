@@ -61,7 +61,7 @@ export const artists: Artist[] = [
     image: "/artists/dj-shero.jpg",
     time: "",
     status: "confirmed",
-    bio: "[KURZBESCHREIBUNG DES ACTS — 1–2 Sätze für das Detail-Modal.]",
+    bio: "Der beste DJ aus der Region.",
     socials: { instagram: "", tiktok: "", spotify: "" },
   },
   {
@@ -71,7 +71,7 @@ export const artists: Artist[] = [
     image: "/artists/eldestrad.jpg",
     time: "",
     status: "confirmed",
-    bio: "[KURZBESCHREIBUNG DES ACTS]",
+    bio: "Der meistgehypte Rapper aus Landshut.",
     socials: { instagram: "", spotify: "" },
   },
   {

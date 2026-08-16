@@ -1,4 +1,16 @@
 import { festival } from "./festival";
+import {
+  getTier,
+  REDUCED_ELIGIBILITY,
+  REDUCED_NO_PROOF_RULE,
+  TICKET_DELIVERY,
+  FEE_NOTE,
+} from "./tickets";
+import { formatPrice } from "@/lib/utils";
+
+/** Prices are read from the catalogue so the FAQ can never drift from it. */
+const price = (id: Parameters<typeof getTier>[0]) =>
+  formatPrice(getTier(id)!.priceCents);
 
 export type FaqItem = {
   id: string;
@@ -13,7 +25,7 @@ export const faqItems: FaqItem[] = [
     id: "wann",
     category: "Allgemein",
     question: "Wann findet die Diamond Night statt?",
-    answer: `Am ${festival.dateLabel} in der ${festival.location.venue}. Einlass- und Beginnzeit werden rechtzeitig vor dem Event bekannt gegeben.`,
+    answer: `Am ${festival.dateLabel} in der ${festival.location.venue}. Einlass ist um ${festival.doorsOpen}, Beginn um ${festival.showStart}.`,
   },
   {
     id: "wo",
@@ -32,8 +44,25 @@ export const faqItems: FaqItem[] = [
     id: "preis",
     category: "Tickets",
     question: "Wie viel kostet ein Ticket?",
-    answer:
-      "Early Bird 20,00 €, Regular 25,00 €, VIP 65,00 € inklusive Meet & Greet mit Muhabbet. Die Kontingente sind gestaffelt — sobald eine Stufe ausverkauft ist, gilt automatisch die nächste.",
+    answer: `Early Bird ${price("early-bird")} (nur bis 15.10.2026), Ermäßigt ${price("ermaessigt")} (nur mit gültigem Nachweis), Regular ${price("regular")} und VIP ${price("vip")} inklusive VIP-Bereich und Meet & Greet mit Muhabbet. VIP ist auf 70 Tickets begrenzt. ${FEE_NOTE}`,
+  },
+  {
+    id: "ermaessigt",
+    category: "Tickets",
+    question: "Wer bekommt das ermäßigte Ticket?",
+    answer: `Das ermäßigte Ticket kostet ${price("ermaessigt")} und gilt für ${REDUCED_ELIGIBILITY}. Der Nachweis wird am Einlass vorgezeigt. ${REDUCED_NO_PROOF_RULE} Maximal ${getTier("ermaessigt")!.maxPerOrder} ermäßigte Tickets pro Bestellung.`,
+  },
+  {
+    id: "versand",
+    category: "Tickets",
+    question: "Wie bekomme ich mein Ticket?",
+    answer: TICKET_DELIVERY,
+  },
+  {
+    id: "zahlungsarten",
+    category: "Tickets",
+    question: "Womit kann ich bezahlen?",
+    answer: `Mit Kreditkarte, PayPal oder Klarna — die Zahlung läuft über unseren Zahlungsanbieter, du wirst dafür kurz auf dessen gesicherte Seite weitergeleitet. ${FEE_NOTE}`,
   },
   {
     id: "alter",
@@ -46,7 +75,7 @@ export const faqItems: FaqItem[] = [
     category: "Tickets",
     question: "Was ist im VIP-Ticket enthalten?",
     answer:
-      "Ein persönliches Meet & Greet mit Muhabbet, bevorzugter Einlass und die beste Sichtkategorie im Haus. Das Kontingent ist stark limitiert.",
+      "Zugang zum VIP-Bereich, ein persönliches Meet & Greet mit Muhabbet, bevorzugter Einlass und die beste Sichtkategorie im Haus. Das Kontingent ist stark limitiert.",
   },
   {
     id: "umtausch",
@@ -60,21 +89,21 @@ export const faqItems: FaqItem[] = [
     category: "Anreise",
     question: "Gibt es Parkplätze?",
     answer:
-      "Ja, an der Sparkassen-Arena Landshut stehen Parkmöglichkeiten direkt am Gelände zur Verfügung. Details zu Kapazität und Gebühren folgen vor dem Event.",
+      "Ja, direkt am Gelände der Sparkassen-Arena Landshut. Die Plätze werden nicht reserviert — first come, first served. Wer sichergehen will, kommt früh oder nimmt den Bus.",
   },
   {
     id: "anreise",
     category: "Anreise",
     question: "Wie komme ich mit Bus/Bahn hin?",
     answer:
-      "Die Sparkassen-Arena liegt im Landshuter Stadtteil Schönbrunn. Die genaue ÖPNV-Anbindung wird hier ergänzt, sobald sie final bestätigt ist.",
+      "Vom Landshuter Hauptbahnhof fährt die Buslinie 603 bis zur Haltestelle Sparkassen-Arena — die hält direkt am Gelände.",
   },
   {
     id: "einlass",
     category: "Vor Ort",
     question: "Was brauche ich für den Einlass?",
     answer:
-      "Ticket und einen gültigen Ausweis. Taschenkontrolle ist möglich — Details zu erlaubtem Taschenformat und Gegenständen folgen vor dem Event.",
+      "Dein Ticket und einen gültigen Ausweis — die Diamond Night ist ab 18 Jahren. Einlass ist ab 20:00 Uhr. Waffen, waffenähnliche und gefährliche Gegenstände, Pyrotechnik, Glas und Dosen sind nicht erlaubt; eine Taschenkontrolle ist möglich.",
   },
   {
     id: "bezahlen",

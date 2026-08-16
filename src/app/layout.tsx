@@ -5,6 +5,7 @@ import { Preloader } from "@/components/effects/Preloader";
 import { CheckoutProvider } from "@/components/checkout/CheckoutContext";
 import { CheckoutFlow } from "@/components/checkout/CheckoutFlow";
 import { festival } from "@/data/festival";
+import { currentTicketStatuses, ticketTiers, tierStatus } from "@/data/tickets";
 
 import "./globals.css";
 
@@ -75,6 +76,25 @@ const eventJsonLd = {
   },
   image: [`${festival.siteUrl}${festival.ogImage}`],
   description,
+  doorTime: festival.doorsAt,
+  typicalAgeRange: "18-",
+  offers: ticketTiers.map((tier) => {
+    const status = tierStatus(tier);
+    return {
+      "@type": "Offer",
+      name: tier.name,
+      price: (tier.priceCents / 100).toFixed(2),
+      priceCurrency: "EUR",
+      url: `${festival.siteUrl}/tickets`,
+      ...(tier.availableUntil ? { validThrough: tier.availableUntil } : {}),
+      availability:
+        status === "on-sale"
+          ? "https://schema.org/InStock"
+          : status === "coming-soon"
+            ? "https://schema.org/PreOrder"
+            : "https://schema.org/SoldOut",
+    };
+  }),
   organizer: {
     "@type": "Organization",
     name: festival.organiser,
@@ -97,7 +117,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div aria-hidden="true" className="grain" />
         <CheckoutProvider>
           {children}
-          <CheckoutFlow />
+          <CheckoutFlow statuses={currentTicketStatuses()} />
         </CheckoutProvider>
       </body>
     </html>

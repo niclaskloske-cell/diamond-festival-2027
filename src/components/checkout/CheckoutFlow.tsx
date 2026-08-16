@@ -13,12 +13,23 @@ import { StepCustomer } from "@/components/checkout/steps/StepCustomer";
 import { StepSummary } from "@/components/checkout/steps/StepSummary";
 import { StepPayment } from "@/components/checkout/steps/StepPayment";
 import { useCheckout } from "@/components/checkout/CheckoutContext";
-import { calculateOrderTotals, getTier, type TicketTierId } from "@/data/tickets";
+import {
+  calculateOrderTotals,
+  getTier,
+  type TicketStatusMap,
+  type TicketTierId,
+} from "@/data/tickets";
 import { validateCustomer, hasErrors, type FieldErrors } from "@/lib/orders";
 import type { Customer } from "@/lib/payments";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
-const EMPTY_CUSTOMER: Customer = { firstName: "", lastName: "", email: "", phone: "" };
+const EMPTY_CUSTOMER: Customer = {
+  firstName: "",
+  lastName: "",
+  birthDate: "",
+  email: "",
+  phone: "",
+};
 
 /**
  * Modal shell. `CheckoutFlowContent` is remounted via `key={state.nonce}` on
@@ -26,17 +37,27 @@ const EMPTY_CUSTOMER: Customer = { firstName: "", lastName: "", email: "", phone
  * state for free — no reset effect needed, and the content stays mounted
  * while the modal exit-animates instead of vanishing on close.
  */
-export function CheckoutFlow() {
+export function CheckoutFlow({ statuses }: { statuses: TicketStatusMap }) {
   const { state, closeCheckout } = useCheckout();
 
   return (
     <Modal open={state.open} onClose={closeCheckout} labelledBy="checkout-title">
-      <CheckoutFlowContent key={state.nonce} initialTierId={state.tierId} />
+      <CheckoutFlowContent
+        key={state.nonce}
+        initialTierId={state.tierId}
+        statuses={statuses}
+      />
     </Modal>
   );
 }
 
-function CheckoutFlowContent({ initialTierId }: { initialTierId: TicketTierId | null }) {
+function CheckoutFlowContent({
+  initialTierId,
+  statuses,
+}: {
+  initialTierId: TicketTierId | null;
+  statuses: TicketStatusMap;
+}) {
   const [step, setStep] = useState(1);
   const [tierId, setTierId] = useState<TicketTierId | null>(initialTierId);
   const [quantity, setQuantity] = useState(1);
@@ -106,7 +127,11 @@ function CheckoutFlowContent({ initialTierId }: { initialTierId: TicketTierId | 
             transition={{ duration: 0.3, ease: EASE }}
           >
             {step === 1 && (
-              <StepTier selected={tierId} onSelect={(id) => setTierId(id)} />
+              <StepTier
+                selected={tierId}
+                statuses={statuses}
+                onSelect={(id) => setTierId(id)}
+              />
             )}
             {step === 2 && tier && (
               <StepQuantity tier={tier} quantity={quantity} onChange={setQuantity} />

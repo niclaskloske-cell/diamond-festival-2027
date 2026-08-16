@@ -1,12 +1,13 @@
-"use client";
+import { ArrowRight } from "lucide-react";
 
-import { TicketCard } from "@/components/sections/tickets/TicketCard";
+import { TicketTierGrid } from "@/components/sections/tickets/TicketTierGrid";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { useCheckout } from "@/components/checkout/CheckoutContext";
-import { ticketTiers } from "@/data/tickets";
+import { ButtonLink } from "@/components/ui/Button";
+import { currentTicketStatuses } from "@/data/tickets";
 
+/** Server component: resolves the ticket statuses before handing them down. */
 export function Tickets() {
-  const { openCheckout } = useCheckout();
+  const statuses = currentTicketStatuses();
 
   return (
     <section id="tickets" className="section-y container-x relative">
@@ -17,13 +18,19 @@ export function Tickets() {
       <SectionHeading
         eyebrow="Tickets"
         title="GET YOUR TICKET"
-        description="Ein Ticket gilt für den kompletten Abend in der Sparkassen-Arena Landshut. Die Kontingente sind gestaffelt — sichere dir jetzt den besten Preis."
+        description="Ein Ticket gilt für den kompletten Abend in der Sparkassen-Arena Landshut. Early Bird läuft nur bis zum 15.10.2026, VIP ist auf 70 Tickets begrenzt."
       />
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {ticketTiers.map((tier) => (
-          <TicketCard key={tier.id} tier={tier} onBuy={() => openCheckout(tier.id)} />
-        ))}
+      <TicketTierGrid statuses={statuses} />
+
+      <div className="mt-10 flex justify-center">
+        <ButtonLink
+          href="/tickets"
+          variant="outline"
+          icon={<ArrowRight className="size-4" />}
+        >
+          Alle Ticket-Details
+        </ButtonLink>
       </div>
     </section>
   );

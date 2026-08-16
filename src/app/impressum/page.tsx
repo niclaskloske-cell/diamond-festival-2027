@@ -6,9 +6,9 @@ import { festival } from "@/data/festival";
 export const metadata: Metadata = { title: "Impressum" };
 
 /**
- * TODO: confirm whether "Diamond Events" is a registered trade name
- * (Gewerbeanmeldung) before launch — if so, add the Gewerbe/Handelsregister
- * entry here. VAT ID (USt-IdNr.) still needs to be added once available.
+ * Confirmed 2026-08-16: no USt-IdNr., no Handelsregister entry — so neither
+ * line appears here. TODO: if Diamond Events invoices under the
+ * Kleinunternehmerregelung, add the § 19 UStG note to the ticket prices.
  */
 export default function ImpressumPage() {
   return (
@@ -30,10 +30,9 @@ export default function ImpressumPage() {
         <br />
         Presse: {festival.contact.press}
       </p>
-      <p>Umsatzsteuer-Identifikationsnummer: [USt-IdNr., FALLS VORHANDEN]</p>
-      <p className="text-faint">
-        Diese Seite wird vor dem offiziellen Launch um die USt-IdNr. (falls
-        vorhanden) und einen etwaigen Gewerberegister-Eintrag ergänzt.
+      <p>
+        Umsatzsteuer-Identifikationsnummer: nicht vorhanden. Ein Eintrag im
+        Handelsregister besteht nicht.
       </p>
     </LegalPage>
   );

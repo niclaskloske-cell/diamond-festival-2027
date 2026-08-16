@@ -1,13 +1,26 @@
 import { Check } from "lucide-react";
 
-import { ticketTiers, type TicketTierId } from "@/data/tickets";
+import {
+  ticketTiers,
+  type TicketStatus,
+  type TicketStatusMap,
+  type TicketTierId,
+} from "@/data/tickets";
 import { formatPrice, cn } from "@/lib/utils";
+
+const UNAVAILABLE_LABEL: Record<Exclude<TicketStatus, "on-sale">, string> = {
+  "sold-out": "Ausverkauft",
+  "coming-soon": "Bald verfügbar",
+  closed: "Verkauf beendet",
+};
 
 export function StepTier({
   selected,
+  statuses,
   onSelect,
 }: {
   selected: TicketTierId | null;
+  statuses: TicketStatusMap;
   onSelect: (id: TicketTierId) => void;
 }) {
   return (
@@ -19,7 +32,8 @@ export function StepTier({
 
       <div className="mt-6 space-y-3">
         {ticketTiers.map((tier) => {
-          const disabled = tier.status !== "on-sale";
+          const status = statuses[tier.id];
+          const disabled = status !== "on-sale";
           const active = selected === tier.id;
           return (
             <button
@@ -49,7 +63,9 @@ export function StepTier({
                     {tier.name}
                   </span>
                   <span className="block text-xs text-muted">
-                    {disabled ? "Nicht verfügbar" : tier.tagline}
+                    {disabled
+                      ? UNAVAILABLE_LABEL[status as Exclude<TicketStatus, "on-sale">]
+                      : tier.tagline}
                   </span>
                 </span>
               </span>

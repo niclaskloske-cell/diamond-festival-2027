@@ -8,14 +8,14 @@
  * With no provider configured, sending fails loudly with
  * `EMAIL_NOT_CONFIGURED` instead of silently pretending a message went out.
  *
- * To go live with Resend (recommended — simple API, good deliverability):
- *   1. `npm i resend`
+ * Resend is implemented below. To switch it on:
+ *   1. verify the domain diamond-night.de in the Resend dashboard
  *   2. set RESEND_API_KEY + EMAIL_PROVIDER=resend in .env.local
- *   3. verify the sending domain (eventsdiamond.de) with Resend
- *   4. implement `resendProvider.sendEmail` (skeleton below)
  *
  * Any SMTP-based provider works the same way via nodemailer instead.
  */
+
+import { festival } from "@/data/festival";
 
 export type EmailMessage = {
   to: string;
@@ -55,26 +55,37 @@ const unconfiguredProvider: EmailProvider = {
 };
 
 /**
- * TODO(resend): implement once `resend` is installed and RESEND_API_KEY is set.
+ * Resend. Needs RESEND_API_KEY plus EMAIL_PROVIDER=resend, and the sending
+ * domain (diamond-night.de) verified in the Resend dashboard — an unverified
+ * domain is rejected at send time, not at deploy time.
  *
- *   const resend = new Resend(process.env.RESEND_API_KEY!);
- *   const { error } = await resend.emails.send({
- *     from: "Diamond Festival Kontaktformular <kontakt@eventsdiamond.de>",
- *     to: message.to,
- *     replyTo: message.replyTo,
- *     subject: message.subject,
- *     text: message.text,
- *   });
- *   if (error) throw new EmailError("PROVIDER_ERROR", error.message);
+ * The client is constructed lazily so a missing key surfaces as a clean
+ * "not configured" error instead of throwing while the module loads.
  */
 const resendProvider: EmailProvider = {
   id: "resend",
-  async sendEmail() {
-    throw new EmailError(
-      "EMAIL_NOT_CONFIGURED",
-      "Resend ist als Anbieter gesetzt, aber noch nicht implementiert (siehe src/lib/email.ts).",
-      501,
-    );
+  async sendEmail(message) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new EmailError(
+        "EMAIL_NOT_CONFIGURED",
+        "RESEND_API_KEY ist nicht gesetzt — der Versand ist noch nicht scharf geschaltet.",
+        503,
+      );
+    }
+
+    const { Resend } = await import("resend");
+    const { error } = await new Resend(apiKey).emails.send({
+      from: `Diamond Night <${festival.contact.tickets}>`,
+      to: message.to,
+      replyTo: message.replyTo,
+      subject: message.subject,
+      text: message.text,
+    });
+
+    if (error) {
+      throw new EmailError("PROVIDER_ERROR", error.message);
+    }
   },
 };
 

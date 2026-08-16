@@ -10,6 +10,9 @@ import { Partners } from "@/components/sections/Partners";
 import { Faq } from "@/components/sections/Faq";
 import { Kontakt } from "@/components/sections/Kontakt";
 
+/** Mirrors /tickets: keeps the Early-Bird deadline fresh on the home grid. */
+export const revalidate = 3600;
+
 export default function Home() {
   return (
     <>

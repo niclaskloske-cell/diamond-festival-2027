@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { getTier, calculateOrderTotals } from "@/data/tickets";
+import { getTier, calculateOrderTotals, tierStatus } from "@/data/tickets";
 import { validateCustomer, hasErrors } from "@/lib/orders";
 import {
   CheckoutError,
@@ -52,8 +52,10 @@ export async function POST(request: Request) {
   // Prices come from the server-side catalogue, never from the request body.
   const priced = [];
   for (const item of items) {
+    // tierStatus(), not tier.status: a tier whose sale window has closed must
+    // be refused even if the buyer still has an old page open.
     const tier = getTier(item.tierId);
-    if (!tier || tier.status !== "on-sale") {
+    if (!tier || tierStatus(tier) !== "on-sale") {
       return NextResponse.json(
         {
           code: "TIER_UNAVAILABLE",
@@ -90,7 +92,7 @@ export async function POST(request: Request) {
       items: priced,
       customer: customer!,
       successUrl: `${origin}/tickets/success`,
-      cancelUrl: `${origin}/#tickets`,
+      cancelUrl: `${origin}/tickets`,
       idempotencyKey: request.headers.get("x-idempotency-key") ?? undefined,
     });
     return NextResponse.json({ ...session, totals });

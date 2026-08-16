@@ -1,21 +1,31 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, Sparkles } from "lucide-react";
+import { BadgeCheck, Check, Sparkles } from "lucide-react";
 
-import type { TicketTier } from "@/data/tickets";
+import type { TicketStatus, TicketTier } from "@/data/tickets";
+import { REDUCED_ELIGIBILITY, REDUCED_NO_PROOF_RULE } from "@/data/tickets";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 
+const BUTTON_LABEL: Record<TicketStatus, string> = {
+  "on-sale": "Ticket kaufen",
+  "sold-out": "Ausverkauft",
+  "coming-soon": "Bald verfügbar",
+  closed: "Verkauf beendet",
+};
+
 export function TicketCard({
   tier,
+  status,
   onBuy,
 }: {
   tier: TicketTier;
+  status: TicketStatus;
   onBuy: () => void;
 }) {
-  const disabled = tier.status !== "on-sale";
+  const disabled = status !== "on-sale";
 
   return (
     <motion.div
@@ -68,17 +78,23 @@ export function TicketCard({
         ))}
       </ul>
 
+      {tier.proofRequired && (
+        <p className="relative mt-5 flex items-start gap-2 rounded-md border border-white/10 bg-white/[0.03] p-3 text-xs leading-relaxed text-faint">
+          <BadgeCheck className="mt-0.5 size-3.5 shrink-0 text-diamond-light" />
+          <span>
+            Gilt nur mit gültigem Nachweis für {REDUCED_ELIGIBILITY}.{" "}
+            {REDUCED_NO_PROOF_RULE}
+          </span>
+        </p>
+      )}
+
       <Button
         onClick={onBuy}
         disabled={disabled}
         variant={tier.featured ? "primary" : "outline"}
         className="relative mt-7 w-full"
       >
-        {tier.status === "sold-out"
-          ? "Ausverkauft"
-          : tier.status === "coming-soon"
-            ? "Bald verfügbar"
-            : "Ticket kaufen"}
+        {BUTTON_LABEL[status]}
       </Button>
     </motion.div>
   );

@@ -29,7 +29,7 @@ export const partners: Partner[] = [
     name: "Drei Helmen",
     tier: "partner",
     logo: "/partners/drei-helmen.png",
-    url: "",
+    url: "https://www.3-helmen.de",
     status: "confirmed",
   },
 ];

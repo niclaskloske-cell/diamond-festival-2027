@@ -1,6 +1,6 @@
 import type { TicketTier } from "@/data/tickets";
 import type { Customer } from "@/lib/payments";
-import { formatPrice } from "@/lib/utils";
+import { formatDate, formatPrice } from "@/lib/utils";
 
 export function StepSummary({
   tier,
@@ -50,10 +50,18 @@ export function StepSummary({
         </div>
       </div>
 
+      {tier.proofRequired && (
+        <p className="mt-4 rounded-md border border-diamond/30 bg-diamond/10 p-4 text-xs leading-relaxed text-diamond-light">
+          Ermäßigtes Ticket: Bitte bring einen gültigen Nachweis mit — ohne
+          Nachweis ist das Ticket am Einlass nicht gültig.
+        </p>
+      )}
+
       <div className="mt-4 rounded-md border border-white/10 bg-surface-2 p-4 text-sm text-muted">
         <p className="font-semibold text-white">
           {customer.firstName} {customer.lastName}
         </p>
+        {customer.birthDate && <p>geb. {formatDate(customer.birthDate)}</p>}
         <p>{customer.email}</p>
         <p>{customer.phone}</p>
       </div>
