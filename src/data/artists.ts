@@ -9,6 +9,8 @@
  * finished at every stage of the booking process.
  */
 
+import { festival } from "./festival";
+
 export type Artist = {
   slug: string;
   name: string;
@@ -76,11 +78,11 @@ export const artists: Artist[] = [
   },
   {
     slug: "support-dj-tba",
-    name: "[DJ WIRD BEKANNT GEGEBEN]",
+    name: "Platz anfragen!",
     genre: "DJ Set",
     image: null,
     time: "",
-    bio: "Ein weiterer DJ-Slot ist für den Abend reserviert — Bekanntgabe folgt.",
+    bio: `Ein weiterer DJ-Slot ist für den Abend noch offen. Interesse? Melde dich bei uns unter ${festival.contact.email}.`,
     socials: {},
   },
 ];
