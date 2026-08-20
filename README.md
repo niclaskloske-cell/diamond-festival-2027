@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Diamond Night — Ticketshop
 
-## Getting Started
+Next.js-App für den Ticketverkauf zur Diamond Night (Muhabbet live). Verkauft über
+Stripe Checkout, meldet bezahlte Bestellungen an die [Diamond Events
+Plattform](https://github.com/niclaskloske-cell/diamond-events-platform), die die
+Ticketcodes ausstellt und am Einlass scannt — dieser Shop selbst führt keine
+Ticket-Wahrheit, nur den Verkauf.
 
-First, run the development server:
+## Lokal starten
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Öffne [http://localhost:3000](http://localhost:3000). Für Checkout/Ticket-Ausgabe
+werden die Variablen aus `.env.example` in einer lokalen `.env.local` benötigt.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Läuft produktiv auf **Render** unter [diamondfestival.de](https://diamondfestival.de) —
+automatischer Deploy bei jedem Push auf `main`. Es gibt keine weitere Deploy-Zielumgebung.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Umgebungsvariablen werden im Render-Dashboard des Service gepflegt, nicht hier im Repo.
