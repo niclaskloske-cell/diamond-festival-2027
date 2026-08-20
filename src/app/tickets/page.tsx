@@ -54,7 +54,7 @@ export default function TicketsPage() {
           <SectionHeading
             eyebrow="Kategorien"
             title="VIER WEGE IN DIE NACHT"
-            description="Ein Ticket gilt für den kompletten Abend. Early Bird gibt es nur bis zum 15.10.2026, VIP ist auf 70 Tickets begrenzt — Regular und Ermäßigt laufen bis zum Event."
+            description="Ein Ticket gilt für den kompletten Abend. Early Bird gibt es nur bis zum 04.10.2026, danach startet Regular am 05.10.2026 — VIP ist auf 70 Tickets begrenzt, Ermäßigt läuft durchgehend bis zum Event."
           />
 
           <TicketTierGrid statuses={statuses} />

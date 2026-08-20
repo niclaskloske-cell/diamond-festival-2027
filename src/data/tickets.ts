@@ -29,6 +29,12 @@ export type TicketTier = {
    */
   availableUntil?: string;
   /**
+   * Sale start. Before this, `tierStatus()` reports "coming-soon" (greyed
+   * out, "Bald verfügbar") regardless of `status` — no manual switch-on
+   * needed once the date arrives.
+   */
+  availableFrom?: string;
+  /**
    * Size of the contingent, where one exists. Display only: there is no stock
    * tracking yet, so a sold-out tier still has to be flipped by hand.
    */
@@ -65,13 +71,14 @@ export const ticketTiers: TicketTier[] = [
     perks: [
       "Einlass zur Diamond Night",
       "Muhabbet live plus komplettes Vorprogramm",
-      "Nur bis zum 15.10.2026 erhältlich",
+      "Nur bis zum 04.10.2026 erhältlich",
     ],
     status: "on-sale",
-    // Sale window ends after 15.10.2026 (CEST). Enforced by tierStatus().
-    availableUntil: "2026-10-15T23:59:59+02:00",
+    // Sale window ends after 04.10.2026 (CEST) — Regular takes over on
+    // 05.10.2026 (see its availableFrom below). Enforced by tierStatus().
+    availableUntil: "2026-10-04T23:59:59+02:00",
     maxPerOrder: 10,
-    note: "Nur bis 15.10.2026",
+    note: "Nur bis 04.10.2026",
   },
   {
     id: "ermaessigt",
@@ -100,8 +107,10 @@ export const ticketTiers: TicketTier[] = [
     ],
     featured: true,
     status: "on-sale",
+    // Opens once Early Bird closes — see its availableUntil above.
+    availableFrom: "2026-10-05T00:00:00+02:00",
     maxPerOrder: 10,
-    note: null,
+    note: "Ab 05.10.2026",
   },
   {
     id: "vip",
@@ -133,6 +142,9 @@ export const getTier = (id: TicketTierId): TicketTier | undefined =>
  */
 export function tierStatus(tier: TicketTier, now: Date = new Date()): TicketStatus {
   if (tier.status !== "on-sale") return tier.status;
+  if (tier.availableFrom && now.getTime() < new Date(tier.availableFrom).getTime()) {
+    return "coming-soon";
+  }
   if (tier.availableUntil && now.getTime() > new Date(tier.availableUntil).getTime()) {
     return "closed";
   }
@@ -225,9 +237,9 @@ export const ticketComparison: TicketFeature[] = [
     id: "verfuegbarkeit",
     label: "Verfügbarkeit",
     values: {
-      "early-bird": "bis 15.10.2026",
+      "early-bird": "bis 04.10.2026",
       ermaessigt: "unbegrenzt",
-      regular: "unbegrenzt",
+      regular: "ab 05.10.2026",
       vip: "70 Tickets",
     },
   },

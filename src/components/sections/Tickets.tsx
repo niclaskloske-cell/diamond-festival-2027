@@ -18,7 +18,7 @@ export function Tickets() {
       <SectionHeading
         eyebrow="Tickets"
         title="GET YOUR TICKET"
-        description="Ein Ticket gilt für den kompletten Abend in der Sparkassen-Arena Landshut. Early Bird läuft nur bis zum 15.10.2026, VIP ist auf 70 Tickets begrenzt."
+        description="Ein Ticket gilt für den kompletten Abend in der Sparkassen-Arena Landshut. Early Bird läuft nur bis zum 04.10.2026, danach startet Regular — VIP ist auf 70 Tickets begrenzt."
       />
 
       <TicketTierGrid statuses={statuses} />

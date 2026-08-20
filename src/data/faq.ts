@@ -44,7 +44,7 @@ export const faqItems: FaqItem[] = [
     id: "preis",
     category: "Tickets",
     question: "Wie viel kostet ein Ticket?",
-    answer: `Early Bird ${price("early-bird")} (nur bis 15.10.2026), Ermäßigt ${price("ermaessigt")} (nur mit gültigem Nachweis), Regular ${price("regular")} und VIP ${price("vip")} inklusive VIP-Bereich und Meet & Greet mit Muhabbet. VIP ist auf 70 Tickets begrenzt. ${FEE_NOTE}`,
+    answer: `Early Bird ${price("early-bird")} (nur bis 04.10.2026), Ermäßigt ${price("ermaessigt")} (nur mit gültigem Nachweis), Regular ${price("regular")} (ab 05.10.2026) und VIP ${price("vip")} inklusive VIP-Bereich und Meet & Greet mit Muhabbet. VIP ist auf 70 Tickets begrenzt. ${FEE_NOTE}`,
   },
   {
     id: "ermaessigt",
