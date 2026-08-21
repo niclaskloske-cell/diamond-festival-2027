@@ -14,7 +14,7 @@ export function Festival() {
       <SectionHeading eyebrow="Event" title="DIE DIAMOND NIGHT" />
 
       {/* Fact strip */}
-      <div className="mb-20 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:grid-cols-4">
+      <div className="mb-20 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 xs:grid-cols-2 sm:grid-cols-4">
         {festivalFacts.map((fact, i) => (
           <motion.div
             key={fact.id}
@@ -22,12 +22,12 @@ export function Festival() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-10% 0px" }}
             transition={{ duration: 0.5, ease: EASE, delay: i * 0.06 }}
-            className="bg-bg p-6"
+            className="min-w-0 bg-bg p-6"
           >
             <p className="text-[0.625rem] font-semibold uppercase tracking-[0.2em] text-diamond-light">
               {fact.label}
             </p>
-            <p className="mt-2 font-display text-2xl font-extrabold text-white sm:text-3xl">
+            <p className="mt-2 break-words font-display text-2xl font-extrabold text-white sm:text-3xl">
               {fact.value}
             </p>
             <p className="mt-2 text-xs text-muted">{fact.detail}</p>

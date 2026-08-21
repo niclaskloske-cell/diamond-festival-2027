@@ -90,9 +90,15 @@ export function Navbar() {
             </nav>
 
             <div className="flex items-center gap-2">
-              <ButtonLink href="/tickets" size="sm" className="hidden sm:inline-flex">
-                Tickets
-              </ButtonLink>
+              {/* Wrapped, not classed directly: Button's own base classes
+                  already set `inline-flex` unconditionally, which fights a
+                  `hidden` passed straight into its className at equal CSS
+                  specificity — the visibility toggle needs its own element. */}
+              <div className="hidden sm:block">
+                <ButtonLink href="/tickets" size="sm">
+                  Tickets
+                </ButtonLink>
+              </div>
               <button
                 type="button"
                 data-cursor="link"
