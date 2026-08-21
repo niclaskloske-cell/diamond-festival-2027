@@ -45,8 +45,7 @@ export const festival = {
   minAgeNote: "Einlass ab 18 Jahren — Ausweiskontrolle am Einlass.",
 
   /** Used by the JSON-LD Event schema and the OG tags. */
-  siteUrl: "https://diamondfestival.de",
-  ogImage: "/og.jpg",
+  siteUrl: "https://diamond-night.de",
 } as const;
 
 /** Fact strip for the event info section. */

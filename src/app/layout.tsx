@@ -39,13 +39,11 @@ export const metadata: Metadata = {
     siteName: festival.fullName,
     title,
     description,
-    images: [{ url: festival.ogImage, width: 1200, height: 630, alt: title }],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    images: [festival.ogImage],
   },
   robots: { index: true, follow: true },
 };
@@ -74,7 +72,7 @@ const eventJsonLd = {
     "@type": "MusicGroup",
     name: "Muhabbet",
   },
-  image: [`${festival.siteUrl}${festival.ogImage}`],
+  image: [`${festival.siteUrl}/opengraph-image`],
   description,
   doorTime: festival.doorsAt,
   typicalAgeRange: "18-",
